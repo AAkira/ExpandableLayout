@@ -1,0 +1,37 @@
+# build application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+build/
+obj/
+apk/
+target/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# eclipse settings
+.classpath
+.project
+.settings/
+proguard/
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea
+.gradle
+
+# Mac
+.DS_Store
+.DS_Store?
+Thumbs.db

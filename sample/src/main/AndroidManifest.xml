@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jp.android.aakira.sample.expandablelayout">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".main.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".expandablelayout.ExpandableLayoutActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".expandableweight.ExpandableWeightActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".examplerecyclerview.RecyclerViewActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".examplesearch.ExampleSearchActivity"
+            android:label="@string/app_name" />
+    </application>
+</manifest>
