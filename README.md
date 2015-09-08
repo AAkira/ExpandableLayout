@@ -3,6 +3,11 @@
 An android library that brings the expandable layout with various animation.
 You can include optional contents and use everywhere.
 
+[![Platform](http://img.shields.io/badge/platform-android-brightgreen.svg?style=flat)](http://developer.android.com/index.html)
+[![Language](http://img.shields.io/badge/language-java-orange.svg?style=flat)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+[![License](http://img.shields.io/badge/license-apache2.0-lightgrey.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ExpandableLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2456)
+
 ## Preview
 
 ### Normal
@@ -162,7 +167,7 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
 You can use [interpolator](http://developer.android.com/reference/android/view/animation/Interpolator.html).
 It helps the layout animates easily.
 
-|Interpolator|attribute name|
+|Interpolator|value name of attribute |
 |:-:|:-:|
 |[AccelerateDecelerateInterpolator](http://developer.android.com/reference/android/view/animation/AccelerateDecelerateInterpolator.html)|accelerateDecelerateInterpolator|
 |[AccelerateInterpolator](http://developer.android.com/reference/android/view/animation/AccelerateInterpolator.html)|accelerateInterpolator|
