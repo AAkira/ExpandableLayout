@@ -1,3 +1,5 @@
+[![Android Gems](http://www.android-gems.com/badge/AAkira/ExpandableLayout.svg?branch=master)](http://www.android-gems.com/lib/AAkira/ExpandableLayout)
+
 # Expandable Layout
 
 An android library that brings the expandable layout with various animation.
