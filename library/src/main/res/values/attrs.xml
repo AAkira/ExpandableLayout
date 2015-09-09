@@ -14,7 +14,7 @@
             <enum name="anticipateOvershoot" value="3" />
             <enum name="bounce" value="4" />
             <enum name="decelerate" value="5" />
-            <enum name="fastOutLinear" value="6" />
+            <enum name="fastOutLinearIn" value="6" />
             <enum name="fastOutSlowIn" value="7" />
             <enum name="linear" value="8" />
             <enum name="linearOutSlowIn" value="9" />
