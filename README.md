@@ -209,6 +209,19 @@ dependencies {
 }
 ```
 
+## Author
+
+### Akira Aratani
+
+* Twitter
+ - https://twitter.com/akira_aratani
+* Mail
+ - developer.a.akira@gmail.com
+
+### Other open source projects
+
+* [OkWear](https://github.com/AAkira/OkWear)
+
 ## License
 
 ```
