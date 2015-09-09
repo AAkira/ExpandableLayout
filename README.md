@@ -7,6 +7,7 @@ You can include optional contents and use everywhere.
 [![Language](http://img.shields.io/badge/language-java-orange.svg?style=flat)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License](http://img.shields.io/badge/license-apache2.0-lightgrey.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ExpandableLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2456)
+[![Android Gems](http://www.android-gems.com/badge/AAkira/ExpandableLayout.svg?branch=master)](http://www.android-gems.com/lib/AAkira/ExpandableLayout)
 
 ## Preview
 
