@@ -7,6 +7,7 @@ You can include optional contents and use everywhere.
 [![Language](http://img.shields.io/badge/language-java-orange.svg?style=flat)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License](http://img.shields.io/badge/license-apache2.0-lightgrey.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ExpandableLayout-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2456)
+[![Android Gems](http://www.android-gems.com/badge/AAkira/ExpandableLayout.svg?branch=master)](http://www.android-gems.com/lib/AAkira/ExpandableLayout)
 
 ## Preview
 
@@ -169,17 +170,17 @@ It helps the layout animates easily.
 
 |Interpolator|value name of attribute |
 |:-:|:-:|
-|[AccelerateDecelerateInterpolator](http://developer.android.com/reference/android/view/animation/AccelerateDecelerateInterpolator.html)|accelerateDecelerateInterpolator|
-|[AccelerateInterpolator](http://developer.android.com/reference/android/view/animation/AccelerateInterpolator.html)|accelerateInterpolator|
-|[AnticipateInterpolator](http://developer.android.com/reference/android/view/animation/AnticipateInterpolator.html)|anticipateInterpolator|
-|[AnticipateOvershootInterpolator](http://developer.android.com/reference/android/view/animation/AnticipateOvershootInterpolator.html)|anticipateOvershootInterpolator|
-|[BounceInterpolator](http://developer.android.com/reference/android/view/animation/BounceInterpolator.html)|bounceInterpolator|
-|[DecelerateInterpolator](http://developer.android.com/reference/android/view/animation/DecelerateInterpolator.html)|decelerateInterpolator|
-|[FastOutLinearInInterpolator](http://developer.android.com/reference/android/support/v4/view/animation/FastOutLinearInInterpolator.html)|fastOutLinearInInterpolator|
-|[FastOutSlowInInterpolator](http://developer.android.com/reference/android/support/v4/view/animation/FastOutSlowInInterpolator.html)|fastOutSlowInInterpolator|
-|[LinearInterpolator](http://developer.android.com/reference/android/view/animation/LinearInterpolator.html)|linearInterpolator|
-|[LinearOutSlowInInterpolator](http://developer.android.com/reference/android/support/v4/view/animation/LinearOutSlowInInterpolator.html)|linearOutSlowInInterpolator|
-|[OvershootInterpolator](http://developer.android.com/reference/android/view/animation/OvershootInterpolator.html)|overshootInterpolator|
+|[AccelerateDecelerateInterpolator](http://developer.android.com/reference/android/view/animation/AccelerateDecelerateInterpolator.html)|accelerateDecelerate|
+|[AccelerateInterpolator](http://developer.android.com/reference/android/view/animation/AccelerateInterpolator.html)|accelerate|
+|[AnticipateInterpolator](http://developer.android.com/reference/android/view/animation/AnticipateInterpolator.html)|anticipate|
+|[AnticipateOvershootInterpolator](http://developer.android.com/reference/android/view/animation/AnticipateOvershootInterpolator.html)|anticipateOvershoot|
+|[BounceInterpolator](http://developer.android.com/reference/android/view/animation/BounceInterpolator.html)|bounce|
+|[DecelerateInterpolator](http://developer.android.com/reference/android/view/animation/DecelerateInterpolator.html)|decelerate|
+|[FastOutLinearInInterpolator](http://developer.android.com/reference/android/support/v4/view/animation/FastOutLinearInInterpolator.html)|fastOutLinearIn|
+|[FastOutSlowInInterpolator](http://developer.android.com/reference/android/support/v4/view/animation/FastOutSlowInInterpolator.html)|fastOutSlowIn|
+|[LinearInterpolator](http://developer.android.com/reference/android/view/animation/LinearInterpolator.html)|linear|
+|[LinearOutSlowInInterpolator](http://developer.android.com/reference/android/support/v4/view/animation/LinearOutSlowInInterpolator.html)|linearOutSlowIn|
+|[OvershootInterpolator](http://developer.android.com/reference/android/view/animation/OvershootInterpolator.html)|overshoot|
 
 These are support interpolator.
 But a case that the expandable layout extends outside doesn't work.
@@ -204,9 +205,22 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.0.0@aar'
+	compile 'com.github.aakira:expandable-layout:1.0.1@aar'
 }
 ```
+
+## Author
+
+### Akira Aratani
+
+* Twitter
+ - https://twitter.com/akira_aratani
+* Mail
+ - developer.a.akira@gmail.com
+
+### Other open source projects
+
+* [OkWear](https://github.com/AAkira/OkWear)
 
 ## License
 
