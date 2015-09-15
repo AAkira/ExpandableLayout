@@ -23,7 +23,7 @@ import jp.android.aakira.expandablelayout.R;
 public class ExpandableRelativeLayout extends RelativeLayout implements ExpandableLayout {
 
     private int duration;
-    private Boolean isDefaultVisibility;
+    private boolean isDefaultVisibility;
     private TimeInterpolator interpolator = new LinearInterpolator();
     private int orientation;
     /**
@@ -35,8 +35,9 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     private ExpandableLayoutListener listener;
     private ExpandableSavedState savedState;
     private int layoutSize = 0;
-    private Boolean isArranged = false;
-    private Boolean isAnimating = false;
+    private boolean isArranged = false;
+    private boolean isCalculatedSize = false;
+    private boolean isAnimating = false;
     private List<Integer> childPositionList = new ArrayList<>();
 
     public ExpandableRelativeLayout(final Context context) {
@@ -76,37 +77,52 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        if (!isCalculatedSize) {
+            // calculate this layout size
+            childPositionList.clear();
+            int childSize;
+            int childMargin;
+            int sumSize = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                final View view = getChildAt(i);
+                final LayoutParams params = (LayoutParams) view.getLayoutParams();
+
+                childSize = isVertical()
+                        ? view.getMeasuredHeight() : view.getMeasuredWidth();
+                childMargin = isVertical()
+                        ? params.topMargin + params.bottomMargin
+                        : params.leftMargin + params.rightMargin;
+                if (0 < i) {
+                    sumSize = childPositionList.get(i - 1);
+                }
+                childPositionList.add(sumSize + childSize + childMargin);
+            }
+            layoutSize = isVertical() ? getMeasuredHeight() : getMeasuredWidth();
+
+            if (0 < layoutSize) {
+                isCalculatedSize = true;
+            }
+        }
+
         if (isArranged) {
             return;
         }
-
-        childPositionList.clear();
-        int childSize;
-        int childMargin;
-        int sumSize = 0;
-        for (int i = 0; i < getChildCount(); i++) {
-            final View view = getChildAt(i);
-            final LayoutParams params = (LayoutParams) view.getLayoutParams();
-
-            childSize = isVertical()
-                    ? view.getMeasuredHeight() : view.getMeasuredWidth();
-            childMargin = isVertical()
-                    ? params.topMargin + params.bottomMargin
-                    : params.leftMargin + params.rightMargin;
-            if (0 < i) {
-                sumSize = childPositionList.get(i - 1);
-            }
-            childPositionList.add(sumSize + childSize + childMargin);
-        }
-        layoutSize = isVertical() ? getMeasuredHeight() : getMeasuredWidth();
-
-        if (0 < layoutSize) {
-            isArranged = true;
-        }
-
         if (!isDefaultVisibility) {
-            getLayoutParams().height = 0;
+            if (isVertical()) {
+                getLayoutParams().height = 0;
+            } else {
+                getLayoutParams().width = 0;
+            }
+        } else {
+            if (isVertical()) {
+                getLayoutParams().height = layoutSize;
+            } else {
+                getLayoutParams().width = layoutSize;
+            }
         }
+        isArranged = true;
+
         if (savedState == null) {
             return;
         }
@@ -139,6 +155,17 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         final ExpandableSavedState ss = (ExpandableSavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         savedState = ss;
+    }
+
+    @Override
+    public void requestLayout() {
+        isArranged = false;
+        super.requestLayout();
+    }
+
+    public void setExpanded(boolean expanded) {
+        isDefaultVisibility = expanded;
+        requestLayout();
     }
 
     /**
@@ -303,6 +330,10 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         this.closePosition = getChildPosition(childIndex);
     }
 
+    private void updateLayout() {
+        super.requestLayout();
+    }
+
     private boolean isVertical() {
         return orientation == VERTICAL;
     }
@@ -328,7 +359,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                 } else {
                     getLayoutParams().width = (int) animator.getAnimatedValue();
                 }
-                requestLayout();
+                updateLayout();
             }
         });
         valueAnimator.addListener(new AnimatorListenerAdapter() {
