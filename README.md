@@ -54,7 +54,7 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
     android:id="@+id/expandableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:defaultVisibility="false"
+    app:expanded="false"
     app:duration="500"
     app:interpolator="bounce"
     app:orientation="vertical">
@@ -159,7 +159,8 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
 |attribute name|description|
 |:-:|:-:|
 |duration|The length of the expand or collapse animation|
-|defaultVisibility|The layout is expanded at first if you set true|
+| ~~defaultVisibility~~ |This attribute is deprecated. `expanded` replaces this.|
+|expanded|The layout is expanded if you set true|
 |orientation|The orientation of animation(horizontal \| vertical)|
 |interpolator|Sets [interpolator](#interpolator)|
 

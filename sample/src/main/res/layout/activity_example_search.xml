@@ -12,29 +12,28 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/white"
-        android:text="Search"/>
+        android:text="Search" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/expandButton"/>
+        android:layout_toLeftOf="@id/expandButton" />
 
     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
         android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/expandButton"
-        app:defaultVisibility="false"
         app:duration="350"
+        app:expanded="false"
         app:interpolator="fastOutSlowIn"
         app:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" />
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 </RelativeLayout>

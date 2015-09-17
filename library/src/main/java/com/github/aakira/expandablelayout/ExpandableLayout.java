@@ -16,7 +16,7 @@ public interface ExpandableLayout {
     /**
      * Visibility of the layout when the layout attaches
      */
-    boolean DEFAULT_VISIBILITY = false;
+    boolean DEFAULT_EXPANDED = false;
     /**
      * Orientation of child views
      */
@@ -62,14 +62,25 @@ public interface ExpandableLayout {
      *
      * @param duration
      */
-    void setDuration(@NonNull final int duration);
+    void setDuration(final int duration);
 
     /**
      * Sets state of expanse at first visibility
      *
+     * This method is deprecated.
+     * The method of #setExpanded(boolean) replaces this.
+     *
      * @param defaultVisibility
      */
-    void setDefaultVisibility(@NonNull final boolean defaultVisibility);
+    @Deprecated
+    void setDefaultVisibility(final boolean defaultVisibility);
+
+    /**
+     * Sets state of expanse
+     *
+     * @param expanded The layout is visible if expanded is true
+     */
+    void setExpanded(final boolean expanded);
 
     /**
      * The time interpolator used in calculating the elapsed fraction of this animation. The
