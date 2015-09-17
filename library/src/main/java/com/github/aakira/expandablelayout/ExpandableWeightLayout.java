@@ -56,8 +56,8 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.expandableLayout, defStyleAttr, 0);
         duration = a.getInteger(R.styleable.expandableLayout_duration, DEFAULT_DURATION);
-        isExpanded = a.getBoolean(R.styleable.expandableLayout_defaultVisibility,
-                DEFAULT_VISIBILITY);
+        isExpanded = a.getBoolean(R.styleable.expandableLayout_expanded,
+                DEFAULT_EXPANDED);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
         interpolator = Utils.createInterpolator(interpolatorType);

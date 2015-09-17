@@ -16,7 +16,7 @@ public interface ExpandableLayout {
     /**
      * Visibility of the layout when the layout attaches
      */
-    boolean DEFAULT_VISIBILITY = false;
+    boolean DEFAULT_EXPANDED = false;
     /**
      * Orientation of child views
      */
