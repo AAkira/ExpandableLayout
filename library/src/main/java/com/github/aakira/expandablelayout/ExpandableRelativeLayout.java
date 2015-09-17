@@ -23,7 +23,7 @@ import jp.android.aakira.expandablelayout.R;
 public class ExpandableRelativeLayout extends RelativeLayout implements ExpandableLayout {
 
     private int duration;
-    private boolean isDefaultVisibility;
+    private boolean isExpanded;
     private TimeInterpolator interpolator = new LinearInterpolator();
     private int orientation;
     /**
@@ -65,7 +65,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.expandableLayout, defStyleAttr, 0);
         duration = a.getInteger(R.styleable.expandableLayout_duration, DEFAULT_DURATION);
-        isDefaultVisibility = a.getBoolean(R.styleable.expandableLayout_defaultVisibility,
+        isExpanded = a.getBoolean(R.styleable.expandableLayout_defaultVisibility,
                 DEFAULT_VISIBILITY);
         orientation = a.getInteger(R.styleable.expandableLayout_orientation, VERTICAL);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_interpolator,
@@ -110,10 +110,10 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (isArranged) {
             return;
         }
-        if (isDefaultVisibility) {
+        if (isExpanded) {
             setLayoutSize(layoutSize);
         } else {
-            setLayoutSize(0);
+            setLayoutSize(closePosition);
         }
         isArranged = true;
 
@@ -147,11 +147,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void requestLayout() {
         isArranged = false;
         super.requestLayout();
-    }
-
-    public void setExpanded(boolean expanded) {
-        isDefaultVisibility = expanded;
-        requestLayout();
     }
 
     /**
@@ -200,7 +195,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * {@inheritDoc}
      */
     @Override
-    public void setDuration(@NonNull final int duration) {
+    public void setDuration(final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +
                     duration);
@@ -211,17 +206,27 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     /**
      * {@inheritDoc}
      */
+    @Deprecated
     @Override
-    public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
-        this.interpolator = interpolator;
+    public void setDefaultVisibility(final boolean defaultVisibility) {
+        this.setExpanded(defaultVisibility);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setDefaultVisibility(@NonNull final boolean defaultVisibility) {
-        this.isDefaultVisibility = defaultVisibility;
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+        requestLayout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
+        this.interpolator = interpolator;
     }
 
     /**

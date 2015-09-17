@@ -20,15 +20,16 @@ import jp.android.aakira.expandablelayout.R;
 public class ExpandableWeightLayout extends RelativeLayout implements ExpandableLayout {
 
     private int duration;
-    private Boolean isDefaultVisibility;
+    private boolean isExpanded;
     private TimeInterpolator interpolator = new LinearInterpolator();
 
     private ExpandableLayoutListener listener;
     private ExpandableSavedState savedState;
     private float layoutWeight = 0.0f;
-    private Boolean isArranged = false;
-    private Boolean isAnimating = false;
-    private Boolean isWeightLayout = false;
+    private boolean isArranged = false;
+    private boolean isCalculatedSize = false;
+    private boolean isAnimating = false;
+    private boolean isWeightLayout = false;
 
     public ExpandableWeightLayout(final Context context) {
         this(context, null);
@@ -55,7 +56,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.expandableLayout, defStyleAttr, 0);
         duration = a.getInteger(R.styleable.expandableLayout_duration, DEFAULT_DURATION);
-        isDefaultVisibility = a.getBoolean(R.styleable.expandableLayout_defaultVisibility,
+        isExpanded = a.getBoolean(R.styleable.expandableLayout_defaultVisibility,
                 DEFAULT_VISIBILITY);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
@@ -79,21 +80,27 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (isArranged) {
-            return;
-        }
         if (!isWeightLayout) {
             return;
         }
 
-        layoutWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
-        if (0 < layoutWeight) {
-            isArranged = true;
+        if (!isCalculatedSize) {
+            layoutWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
+            if (0 < layoutWeight) {
+                isCalculatedSize = true;
+            }
         }
 
-        if (!isDefaultVisibility) {
+        if (isArranged) {
+            return;
+        }
+        if (isExpanded) {
+            ((LinearLayout.LayoutParams) getLayoutParams()).weight = layoutWeight;
+        } else {
             ((LinearLayout.LayoutParams) getLayoutParams()).weight = 0;
         }
+        isArranged = true;
+
         if (savedState == null) {
             return;
         }
@@ -120,6 +127,12 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         final ExpandableSavedState ss = (ExpandableSavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         savedState = ss;
+    }
+
+    @Override
+    public void requestLayout() {
+        isArranged = false;
+        super.requestLayout();
     }
 
     /**
@@ -182,17 +195,31 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     /**
      * {@inheritDoc}
      */
+    @Deprecated
     @Override
-    public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
-        this.interpolator = interpolator;
+    public void setDefaultVisibility(final boolean defaultVisibility) {
+        setExpanded(defaultVisibility);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setDefaultVisibility(final boolean defaultVisibility) {
-        this.isDefaultVisibility = defaultVisibility;
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+        requestLayout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
+        this.interpolator = interpolator;
+    }
+
+    private void updateLayout() {
+        super.requestLayout();
     }
 
     /**
@@ -216,7 +243,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                 }
                 ((LinearLayout.LayoutParams) getLayoutParams()).weight =
                         (float) animation.getAnimatedValue();
-                requestLayout();
+                updateLayout();
             }
         });
         valueAnimator.addListener(new AnimatorListenerAdapter() {
