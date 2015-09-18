@@ -18,8 +18,6 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.android.aakira.expandablelayout.R;
-
 public class ExpandableRelativeLayout extends RelativeLayout implements ExpandableLayout {
 
     private int duration;

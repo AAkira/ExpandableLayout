@@ -15,8 +15,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import jp.android.aakira.expandablelayout.R;
-
 public class ExpandableWeightLayout extends RelativeLayout implements ExpandableLayout {
 
     private int duration;
