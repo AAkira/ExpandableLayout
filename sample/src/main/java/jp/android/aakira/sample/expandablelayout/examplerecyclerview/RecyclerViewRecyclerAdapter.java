@@ -1,5 +1,6 @@
 package jp.android.aakira.sample.expandablelayout.examplerecyclerview;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.github.aakira.expandablelayout.Utils;
 
 import java.util.List;
 
@@ -58,14 +60,22 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             }
 
             @Override
+            public void onPreOpen() {
+                createRotateAnimator(holder.buttonLayout, 0f, 180f).start();
+            }
+
+            @Override
+            public void onPreClose() {
+                createRotateAnimator(holder.buttonLayout, 180f, 0f).start();
+            }
+
+            @Override
             public void onOpened() {
-                holder.buttonLayout.setRotation(180);
                 expandState.put(position, true);
             }
 
             @Override
             public void onClosed() {
-                holder.buttonLayout.setRotation(0);
                 expandState.put(position, false);
             }
         });
@@ -98,5 +108,12 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             buttonLayout = (RelativeLayout) v.findViewById(R.id.button);
             expandableLayout = (ExpandableRelativeLayout) v.findViewById(R.id.expandableLayout);
         }
+    }
+
+    public ObjectAnimator createRotateAnimator(final View target, final float from, final float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(target, "rotation", from, to);
+        animator.setDuration(300);
+        animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
+        return animator;
     }
 }
