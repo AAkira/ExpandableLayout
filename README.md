@@ -134,13 +134,14 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
 expandableLayout.setListener(new ExpandableLayoutListener() {
     @Override
     public void onAnimationStart() {
-
     }
 
     @Override
     public void onAnimationEnd() {
-
     }
+
+    // You can get notification that your expandable layout is going to open or close.
+    // So, you can set the animation synchronized with expanding animation.
     @Override
     public void onPreOpen() {
     }
@@ -151,12 +152,10 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
 
     @Override
     public void onOpened() {
-
     }
 
     @Override
     public void onClosed() {
-
     }
 });
 ```
@@ -213,7 +212,7 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.0.1@aar'
+	compile 'com.github.aakira:expandable-layout:1.1.0@aar'
 }
 ```
 
