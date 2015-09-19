@@ -54,7 +54,7 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
     android:id="@+id/expandableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:defaultVisibility="false"
+    app:expanded="false"
     app:duration="500"
     app:interpolator="bounce"
     app:orientation="vertical">
@@ -134,22 +134,28 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
 expandableLayout.setListener(new ExpandableLayoutListener() {
     @Override
     public void onAnimationStart() {
-
     }
 
     @Override
     public void onAnimationEnd() {
+    }
 
+    // You can get notification that your expandable layout is going to open or close.
+    // So, you can set the animation synchronized with expanding animation.
+    @Override
+    public void onPreOpen() {
+    }
+
+    @Override
+    public void onPreClose() {
     }
 
     @Override
     public void onOpened() {
-
     }
 
     @Override
     public void onClosed() {
-
     }
 });
 ```
@@ -159,7 +165,8 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
 |attribute name|description|
 |:-:|:-:|
 |duration|The length of the expand or collapse animation|
-|defaultVisibility|The layout is expanded at first if you set true|
+| ~~defaultVisibility~~ |This attribute is deprecated. `expanded` replaces this.|
+|expanded|The layout is expanded if you set true|
 |orientation|The orientation of animation(horizontal \| vertical)|
 |interpolator|Sets [interpolator](#interpolator)|
 
@@ -205,7 +212,7 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.0.1@aar'
+	compile 'com.github.aakira:expandable-layout:1.1.0@aar'
 }
 ```
 
@@ -243,4 +250,4 @@ limitations under the License.
 [ExpandableRelativeLayout]: /art/ExpandableRelativeLayout.gif
 [ExpandableWeightLayout]: /art/ExpandableWeightLayout.gif
 [ExampleSearch]: /art/ExampleSearch.gif
-[ExampleRecyclerView]: /art/ExampleRecyclerview.gif
+[ExampleRecyclerView]: /art/ExampleRecyclerview_v1.1.gif

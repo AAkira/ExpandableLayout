@@ -1,30 +1,36 @@
 package jp.android.aakira.sample.expandablelayout.examplerecyclerview;
 
-import android.animation.TimeInterpolator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.Map;
-
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.github.aakira.expandablelayout.Utils;
+
+import java.util.List;
+
 import jp.android.aakira.sample.expandablelayout.R;
 
 public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewRecyclerAdapter.ViewHolder> {
 
-    private final Map<Integer, String> data;
+    private final List<ItemModel> data;
     private Context context;
-    private TimeInterpolator interpolator;
+    private SparseBooleanArray expandState = new SparseBooleanArray();
 
-    public RecyclerViewRecyclerAdapter(final Map<Integer, String> data) {
+    public RecyclerViewRecyclerAdapter(final List<ItemModel> data) {
         this.data = data;
+        for (int i = 0; i < data.size(); i++) {
+            expandState.append(i, false);
+        }
     }
 
     @Override
@@ -36,63 +42,16 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.textView.setText(data.get(position));
-
-        int colorId1;
-        int colorId2;
-        switch (position) {
-            case 0:
-                colorId1 = R.color.material_red_500;
-                colorId2 = R.color.material_red_300;
-                interpolator = Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR);
-                break;
-            case 1:
-                colorId1 = R.color.material_pink_500;
-                colorId2 = R.color.material_pink_300;
-                interpolator = Utils.createInterpolator(Utils.ACCELERATE_INTERPOLATOR);
-                break;
-            case 2:
-                colorId1 = R.color.material_purple_500;
-                colorId2 = R.color.material_purple_300;
-                interpolator = Utils.createInterpolator(Utils.BOUNCE_INTERPOLATOR);
-                break;
-            case 3:
-                colorId1 = R.color.material_deep_purple_500;
-                colorId2 = R.color.material_deep_purple_300;
-                interpolator = Utils.createInterpolator(Utils.DECELERATE_INTERPOLATOR);
-                break;
-            case 4:
-                colorId1 = R.color.material_indigo_500;
-                colorId2 = R.color.material_indigo_300;
-                interpolator = Utils.createInterpolator(Utils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
-                break;
-            case 5:
-                colorId1 = R.color.material_blue_500;
-                colorId2 = R.color.material_blue_300;
-                interpolator = Utils.createInterpolator(Utils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                break;
-            case 6:
-                colorId1 = R.color.material_light_blue_500;
-                colorId2 = R.color.material_light_blue_300;
-                interpolator = Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR);
-                break;
-            case 7:
-                colorId1 = R.color.material_cyan_500;
-                colorId2 = R.color.material_cyan_300;
-                interpolator = Utils.createInterpolator(Utils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-                break;
-            default:
-                colorId1 = R.color.material_cyan_500;
-                colorId2 = R.color.material_cyan_300;
-                interpolator = Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR);
-        }
-        holder.itemView.setBackgroundColor(context.getResources().getColor(colorId1));
-        holder.expandableLayout.setBackgroundColor(context.getResources().getColor(colorId2));
-        holder.expandableLayout.setInterpolator(interpolator);
+        final ItemModel item = data.get(position);
+        final Resources resource = context.getResources();
+        holder.textView.setText(item.description);
+        holder.itemView.setBackgroundColor(resource.getColor(item.colorId1));
+        holder.expandableLayout.setBackgroundColor(resource.getColor(item.colorId2));
+        holder.expandableLayout.setInterpolator(item.interpolator);
+        holder.expandableLayout.setExpanded(expandState.get(position));
         holder.expandableLayout.setListener(new ExpandableLayoutListener() {
             @Override
             public void onAnimationStart() {
-
             }
 
             @Override
@@ -101,13 +60,23 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             }
 
             @Override
+            public void onPreOpen() {
+                createRotateAnimator(holder.buttonLayout, 0f, 180f).start();
+            }
+
+            @Override
+            public void onPreClose() {
+                createRotateAnimator(holder.buttonLayout, 180f, 0f).start();
+            }
+
+            @Override
             public void onOpened() {
-                holder.buttonLayout.setRotation(180);
+                expandState.put(position, true);
             }
 
             @Override
             public void onClosed() {
-                holder.buttonLayout.setRotation(0);
+                expandState.put(position, false);
             }
         });
 
@@ -139,5 +108,12 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             buttonLayout = (RelativeLayout) v.findViewById(R.id.button);
             expandableLayout = (ExpandableRelativeLayout) v.findViewById(R.id.expandableLayout);
         }
+    }
+
+    public ObjectAnimator createRotateAnimator(final View target, final float from, final float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(target, "rotation", from, to);
+        animator.setDuration(300);
+        animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
+        return animator;
     }
 }
