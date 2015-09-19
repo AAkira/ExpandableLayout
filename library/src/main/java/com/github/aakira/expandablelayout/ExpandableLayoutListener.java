@@ -14,6 +14,16 @@ public interface ExpandableLayoutListener {
     void onAnimationEnd();
 
     /**
+     * Notifies the layout is going to open.
+     */
+    void onPreOpen();
+
+    /**
+     * Notifies the layout is going to equal close size.
+     */
+    void onPreClose();
+
+    /**
      * Notifies the layout opened.
      */
     void onOpened();

@@ -141,6 +141,13 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
     public void onAnimationEnd() {
 
     }
+    @Override
+    public void onPreOpen() {
+    }
+
+    @Override
+    public void onPreClose() {
+    }
 
     @Override
     public void onOpened() {
@@ -244,4 +251,4 @@ limitations under the License.
 [ExpandableRelativeLayout]: /art/ExpandableRelativeLayout.gif
 [ExpandableWeightLayout]: /art/ExpandableWeightLayout.gif
 [ExampleSearch]: /art/ExampleSearch.gif
-[ExampleRecyclerView]: /art/ExampleRecyclerview.gif
+[ExampleRecyclerView]: /art/ExampleRecyclerview_v1.1.gif
