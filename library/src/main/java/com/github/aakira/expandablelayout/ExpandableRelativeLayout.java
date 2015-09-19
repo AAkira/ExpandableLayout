@@ -367,6 +367,14 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                     return;
                 }
                 listener.onAnimationStart();
+
+                if (layoutSize == to) {
+                    listener.onPreOpen();
+                    return;
+                }
+                if (closePosition == to) {
+                    listener.onPreClose();
+                }
             }
 
             @Override

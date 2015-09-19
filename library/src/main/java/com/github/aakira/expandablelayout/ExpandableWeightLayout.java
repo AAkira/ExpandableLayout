@@ -252,6 +252,14 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                     return;
                 }
                 listener.onAnimationStart();
+
+                if (layoutWeight == to) {
+                    listener.onPreOpen();
+                    return;
+                }
+                if (0 == to) {
+                    listener.onPreClose();
+                }
             }
 
             @Override
