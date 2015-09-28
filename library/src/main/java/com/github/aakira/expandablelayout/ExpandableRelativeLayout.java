@@ -62,10 +62,10 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     private void init(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.expandableLayout, defStyleAttr, 0);
-        duration = a.getInteger(R.styleable.expandableLayout_duration, DEFAULT_DURATION);
-        isExpanded = a.getBoolean(R.styleable.expandableLayout_expanded, DEFAULT_EXPANDED);
-        orientation = a.getInteger(R.styleable.expandableLayout_orientation, VERTICAL);
-        final int interpolatorType = a.getInteger(R.styleable.expandableLayout_interpolator,
+        duration = a.getInteger(R.styleable.expandableLayout_ael_duration, DEFAULT_DURATION);
+        isExpanded = a.getBoolean(R.styleable.expandableLayout_ael_expanded, DEFAULT_EXPANDED);
+        orientation = a.getInteger(R.styleable.expandableLayout_ael_orientation, VERTICAL);
+        final int interpolatorType = a.getInteger(R.styleable.expandableLayout_ael_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
         interpolator = Utils.createInterpolator(interpolatorType);
         a.recycle();

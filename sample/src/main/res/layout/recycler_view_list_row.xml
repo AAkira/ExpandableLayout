@@ -34,9 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_below="@id/textView"
-        app:expanded="false"
-        app:duration="400"
-        app:orientation="vertical">
+        app:ael_expanded="false"
+        app:ael_duration="400"
+        app:ael_orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
