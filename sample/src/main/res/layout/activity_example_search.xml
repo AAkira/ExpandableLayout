@@ -25,10 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/expandButton"
-        app:duration="350"
-        app:expanded="false"
-        app:interpolator="fastOutSlowIn"
-        app:orientation="vertical">
+        app:ael_duration="350"
+        app:ael_expanded="false"
+        app:ael_interpolator="fastOutSlowIn"
+        app:ael_orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"

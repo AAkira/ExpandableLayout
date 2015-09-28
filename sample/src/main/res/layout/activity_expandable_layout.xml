@@ -75,9 +75,9 @@
         android:layout_height="match_parent"
         android:layout_below="@id/column2"
         android:background="@color/material_light_blue_500"
-        app:duration="500"
-        app:interpolator="bounce"
-        app:orientation="vertical">
+        app:ael_duration="500"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
 
         <TextView
             android:id="@+id/one"
