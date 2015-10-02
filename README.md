@@ -165,7 +165,6 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
 |attribute name|description|
 |:-:|:-:|
 |ael_duration|The length of the expand or collapse animation|
-| ~~defaultVisibility~~ |This attribute is deprecated. `expanded` replaces this.|
 |ael_expanded|The layout is expanded if you set true|
 |ael_orientation|The orientation of animation(horizontal \| vertical)|
 |ael_interpolator|Sets [interpolator](#interpolator)|
