@@ -31,9 +31,9 @@
             android:layout_weight="3"
             android:background="@color/material_light_green_500"
             android:padding="@dimen/margin_normal"
-            app:expanded="false"
-            app:duration="1000"
-            app:interpolator="anticipateOvershoot">
+            app:ael_expanded="false"
+            app:ael_duration="1000"
+            app:ael_interpolator="anticipateOvershoot">
 
             <TextView
                 android:layout_width="match_parent"

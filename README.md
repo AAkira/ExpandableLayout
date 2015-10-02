@@ -164,11 +164,10 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
 
 |attribute name|description|
 |:-:|:-:|
-|duration|The length of the expand or collapse animation|
-| ~~defaultVisibility~~ |This attribute is deprecated. `expanded` replaces this.|
-|expanded|The layout is expanded if you set true|
-|orientation|The orientation of animation(horizontal \| vertical)|
-|interpolator|Sets [interpolator](#interpolator)|
+|ael_duration|The length of the expand or collapse animation|
+|ael_expanded|The layout is expanded if you set true|
+|ael_orientation|The orientation of animation(horizontal \| vertical)|
+|ael_interpolator|Sets [interpolator](#interpolator)|
 
 ### Interpolator
 
@@ -212,7 +211,7 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.1.0@aar'
+	compile 'com.github.aakira:expandable-layout:1.2.0@aar'
 }
 ```
 

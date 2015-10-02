@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="expandableLayout">
-        <attr name="duration" format="integer" />
-        <attr name="expanded" format="boolean" />
-        <attr name="orientation" format="enum">
+        <attr name="ael_duration" format="integer" />
+        <attr name="ael_expanded" format="boolean" />
+        <attr name="ael_orientation" format="enum">
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
-        <attr name="interpolator" format="enum">
+        <attr name="ael_interpolator" format="enum">
             <enum name="accelerateDecelerate" value="0" />
             <enum name="accelerate" value="1" />
             <enum name="anticipate" value="2" />

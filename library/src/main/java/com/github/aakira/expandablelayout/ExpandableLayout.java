@@ -65,17 +65,6 @@ public interface ExpandableLayout {
     void setDuration(final int duration);
 
     /**
-     * Sets state of expanse at first visibility
-     *
-     * This method is deprecated.
-     * The method of #setExpanded(boolean) replaces this.
-     *
-     * @param defaultVisibility
-     */
-    @Deprecated
-    void setDefaultVisibility(final boolean defaultVisibility);
-
-    /**
      * Sets state of expanse
      *
      * @param expanded The layout is visible if expanded is true
