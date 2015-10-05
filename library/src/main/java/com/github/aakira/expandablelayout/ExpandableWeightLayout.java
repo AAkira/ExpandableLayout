@@ -126,12 +126,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         savedState = ss;
     }
 
-    @Override
-    public void requestLayout() {
-        isArranged = false;
-        super.requestLayout();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -181,6 +175,19 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      * {@inheritDoc}
      */
     @Override
+    public void initLayout() {
+        layoutWeight = 0;
+        isArranged = false;
+        isCalculatedSize = false;
+        savedState = null;
+
+        super.requestLayout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setDuration(@NonNull final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +
@@ -196,6 +203,14 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     public void setExpanded(boolean expanded) {
         isExpanded = expanded;
         requestLayout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isExpanded() {
+        return isExpanded;
     }
 
     /**
@@ -256,6 +271,8 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
             @Override
             public void onAnimationEnd(Animator animation) {
                 isAnimating = false;
+                final float currentWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
+                isExpanded = currentWeight > 0;
 
                 if (listener == null) {
                     return;
@@ -266,7 +283,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                     return;
                 }
 
-                final float currentWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
                 if (currentWeight == layoutWeight) {
                     listener.onOpened();
                     return;

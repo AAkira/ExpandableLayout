@@ -140,12 +140,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         savedState = ss;
     }
 
-    @Override
-    public void requestLayout() {
-        isArranged = false;
-        super.requestLayout();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -192,6 +186,20 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * {@inheritDoc}
      */
     @Override
+    public void initLayout() {
+        closePosition = 0;
+        layoutSize = 0;
+        isArranged = false;
+        isCalculatedSize = false;
+        savedState = null;
+
+        super.requestLayout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setDuration(final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +
@@ -207,6 +215,14 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void setExpanded(boolean expanded) {
         isExpanded = expanded;
         requestLayout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isExpanded() {
+        return isExpanded;
     }
 
     /**
@@ -353,7 +369,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationStart(Animator animator) {
                 isAnimating = true;
-
                 if (listener == null) {
                     return;
                 }
@@ -371,13 +386,15 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationEnd(Animator animator) {
                 isAnimating = false;
+                final int currentSize = isVertical()
+                        ? getLayoutParams().height : getLayoutParams().width;
+                isExpanded = currentSize > closePosition;
+
                 if (listener == null) {
                     return;
                 }
                 listener.onAnimationEnd();
 
-                final int currentSize = isVertical()
-                        ? getLayoutParams().height : getLayoutParams().width;
                 if (currentSize == layoutSize) {
                     listener.onOpened();
                     return;

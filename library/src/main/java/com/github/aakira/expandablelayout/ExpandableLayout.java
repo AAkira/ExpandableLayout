@@ -35,22 +35,27 @@ public interface ExpandableLayout {
     }
 
     /**
-     * Starts animation the state of the view to the inverse of its current state
+     * Starts animation the state of the view to the inverse of its current state.
      */
     void toggle();
 
     /**
-     * Starts expand animation
+     * Starts expand animation.
      */
     void expand();
 
     /**
-     * Starts collapse animation
+     * Starts collapse animation.
      */
     void collapse();
 
     /**
-     * Sets the expandable layout listener
+     * Initializes this layout.
+     */
+    void initLayout();
+
+    /**
+     * Sets the expandable layout listener.
      *
      * @param listener ExpandableLayoutListener
      */
@@ -65,11 +70,18 @@ public interface ExpandableLayout {
     void setDuration(final int duration);
 
     /**
-     * Sets state of expanse
+     * Sets state of expanse.
      *
      * @param expanded The layout is visible if expanded is true
      */
     void setExpanded(final boolean expanded);
+
+    /**
+     * Gets state of expanse.
+     *
+     * @return true if the layout is visible
+     */
+    boolean isExpanded();
 
     /**
      * The time interpolator used in calculating the elapsed fraction of this animation. The
