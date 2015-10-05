@@ -140,12 +140,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         savedState = ss;
     }
 
-    @Override
-    public void requestLayout() {
-        isArranged = false;
-        super.requestLayout();
-    }
-
     /**
      * {@inheritDoc}
      */

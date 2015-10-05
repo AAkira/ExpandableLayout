@@ -126,12 +126,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         savedState = ss;
     }
 
-    @Override
-    public void requestLayout() {
-        isArranged = false;
-        super.requestLayout();
-    }
-
     /**
      * {@inheritDoc}
      */
