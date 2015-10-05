@@ -221,6 +221,14 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * {@inheritDoc}
      */
     @Override
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
         this.interpolator = interpolator;
     }
@@ -361,7 +369,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationStart(Animator animator) {
                 isAnimating = true;
-
                 if (listener == null) {
                     return;
                 }
@@ -379,13 +386,15 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationEnd(Animator animator) {
                 isAnimating = false;
+                final int currentSize = isVertical()
+                        ? getLayoutParams().height : getLayoutParams().width;
+                isExpanded = currentSize > closePosition;
+
                 if (listener == null) {
                     return;
                 }
                 listener.onAnimationEnd();
 
-                final int currentSize = isVertical()
-                        ? getLayoutParams().height : getLayoutParams().width;
                 if (currentSize == layoutSize) {
                     listener.onOpened();
                     return;

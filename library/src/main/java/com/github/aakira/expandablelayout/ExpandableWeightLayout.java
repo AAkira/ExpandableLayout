@@ -209,6 +209,14 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      * {@inheritDoc}
      */
     @Override
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
         this.interpolator = interpolator;
     }
@@ -263,6 +271,8 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
             @Override
             public void onAnimationEnd(Animator animation) {
                 isAnimating = false;
+                final float currentWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
+                isExpanded = currentWeight > 0;
 
                 if (listener == null) {
                     return;
@@ -273,7 +283,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                     return;
                 }
 
-                final float currentWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
                 if (currentWeight == layoutWeight) {
                     listener.onOpened();
                     return;

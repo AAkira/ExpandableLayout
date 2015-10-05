@@ -77,6 +77,13 @@ public interface ExpandableLayout {
     void setExpanded(final boolean expanded);
 
     /**
+     * Gets state of expanse.
+     *
+     * @return true if the layout is visible
+     */
+    boolean isExpanded();
+
+    /**
      * The time interpolator used in calculating the elapsed fraction of this animation. The
      * interpolator determines whether the animation runs with linear or non-linear motion,
      * such as acceleration and deceleration.
