@@ -140,12 +140,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         savedState = ss;
     }
 
-    @Override
-    public void requestLayout() {
-        isArranged = false;
-        super.requestLayout();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -186,6 +180,20 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             return;
         }
         createExpandAnimator(getCurrentPosition(), closePosition).start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initLayout() {
+        closePosition = 0;
+        layoutSize = 0;
+        isArranged = false;
+        isCalculatedSize = false;
+        savedState = null;
+
+        super.requestLayout();
     }
 
     /**

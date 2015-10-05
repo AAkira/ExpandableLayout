@@ -126,12 +126,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         savedState = ss;
     }
 
-    @Override
-    public void requestLayout() {
-        isArranged = false;
-        super.requestLayout();
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -175,6 +169,19 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
             return;
         }
         createExpandAnimator(layoutWeight, 0).start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initLayout() {
+        layoutWeight = 0;
+        isArranged = false;
+        isCalculatedSize = false;
+        savedState = null;
+
+        super.requestLayout();
     }
 
     /**
