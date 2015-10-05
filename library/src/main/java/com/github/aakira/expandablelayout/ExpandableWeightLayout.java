@@ -192,15 +192,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     /**
      * {@inheritDoc}
      */
-    @Deprecated
-    @Override
-    public void setDefaultVisibility(final boolean defaultVisibility) {
-        setExpanded(defaultVisibility);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setExpanded(boolean expanded) {
         isExpanded = expanded;

@@ -203,15 +203,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     /**
      * {@inheritDoc}
      */
-    @Deprecated
-    @Override
-    public void setDefaultVisibility(final boolean defaultVisibility) {
-        this.setExpanded(defaultVisibility);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setExpanded(boolean expanded) {
         isExpanded = expanded;
