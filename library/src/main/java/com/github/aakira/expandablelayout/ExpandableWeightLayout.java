@@ -175,6 +175,19 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      * {@inheritDoc}
      */
     @Override
+    public void initLayout() {
+        layoutWeight = 0;
+        isArranged = false;
+        isCalculatedSize = false;
+        savedState = null;
+
+        super.requestLayout();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setDuration(@NonNull final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +
