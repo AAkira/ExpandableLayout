@@ -62,24 +62,25 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             @Override
             public void onPreOpen() {
                 createRotateAnimator(holder.buttonLayout, 0f, 180f).start();
+                expandState.put(position, true);
             }
 
             @Override
             public void onPreClose() {
                 createRotateAnimator(holder.buttonLayout, 180f, 0f).start();
+                expandState.put(position, false);
             }
 
             @Override
             public void onOpened() {
-                expandState.put(position, true);
             }
 
             @Override
             public void onClosed() {
-                expandState.put(position, false);
             }
         });
 
+        holder.buttonLayout.setRotation(expandState.get(position) ? 180f : 0f);
         holder.buttonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
