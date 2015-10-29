@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
-import com.github.aakira.expandablelayout.ExpandableLayoutListener;
+import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.github.aakira.expandablelayout.Utils;
 
@@ -49,16 +49,7 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
         holder.expandableLayout.setBackgroundColor(resource.getColor(item.colorId2));
         holder.expandableLayout.setInterpolator(item.interpolator);
         holder.expandableLayout.setExpanded(expandState.get(position));
-        holder.expandableLayout.setListener(new ExpandableLayoutListener() {
-            @Override
-            public void onAnimationStart() {
-            }
-
-            @Override
-            public void onAnimationEnd() {
-
-            }
-
+        holder.expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
             @Override
             public void onPreOpen() {
                 createRotateAnimator(holder.buttonLayout, 0f, 180f).start();
@@ -69,14 +60,6 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             public void onPreClose() {
                 createRotateAnimator(holder.buttonLayout, 180f, 0f).start();
                 expandState.put(position, false);
-            }
-
-            @Override
-            public void onOpened() {
-            }
-
-            @Override
-            public void onClosed() {
             }
         });
 
