@@ -214,6 +214,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     @Override
     public void setExpanded(boolean expanded) {
         isExpanded = expanded;
+        isArranged = false;
         requestLayout();
     }
 
@@ -274,6 +275,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @param index index of child view
+     *
      * @return position from top or left
      */
     public int getChildPosition(final int index) {
@@ -288,6 +290,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @return
+     *
      * @see #closePosition
      */
     public int getClosePosition() {
@@ -298,6 +301,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets the close position directly.
      *
      * @param position
+     *
      * @see #closePosition
      * @see #setClosePositionIndex(int)
      */
@@ -318,15 +322,12 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets close position using index of child view.
      *
      * @param childIndex
+     *
      * @see #closePosition
      * @see #setClosePosition(int)
      */
     public void setClosePositionIndex(final int childIndex) {
         this.closePosition = getChildPosition(childIndex);
-    }
-
-    private void updateLayout() {
-        super.requestLayout();
     }
 
     private boolean isVertical() {
@@ -348,6 +349,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      *
      * @param from
      * @param to
+     *
      * @return
      */
     private ValueAnimator createExpandAnimator(final int from, final int to) {
@@ -362,7 +364,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                 } else {
                     getLayoutParams().width = (int) animator.getAnimatedValue();
                 }
-                updateLayout();
+                requestLayout();
             }
         });
         valueAnimator.addListener(new AnimatorListenerAdapter() {
