@@ -3,6 +3,7 @@
     <declare-styleable name="expandableLayout">
         <attr name="ael_duration" format="integer" />
         <attr name="ael_expanded" format="boolean" />
+        <attr name="ael_defaultChildIndex" format="integer" />
         <attr name="ael_orientation" format="enum">
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
