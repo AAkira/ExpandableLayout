@@ -51,8 +51,10 @@ public interface ExpandableLayout {
 
     /**
      * Initializes this layout.
+     *
+     * @param isMaintain The state of expanse is maintained if you set true.
      */
-    void initLayout();
+    void initLayout(final boolean isMaintain);
 
     /**
      * Sets the expandable layout listener.

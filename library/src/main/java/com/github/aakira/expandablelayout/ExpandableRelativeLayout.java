@@ -25,6 +25,14 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     private TimeInterpolator interpolator = new LinearInterpolator();
     private int orientation;
     /**
+     * You cannot define {@link #isExpanded}, {@link #defaultChildIndex}
+     * and {@link #defaultChildPosition} at the same time.
+     * {@link #defaultChildPosition} has priority over {@link #isExpanded}
+     * and {@link #defaultChildIndex} if you set them at the same time.
+     */
+    private int defaultChildIndex;
+    private int defaultChildPosition;
+    /**
      * The close position is width from left of layout if orientation is horizontal.
      * The close position is height from top of layout if orientation is vertical.
      */
@@ -65,6 +73,10 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         duration = a.getInteger(R.styleable.expandableLayout_ael_duration, DEFAULT_DURATION);
         isExpanded = a.getBoolean(R.styleable.expandableLayout_ael_expanded, DEFAULT_EXPANDED);
         orientation = a.getInteger(R.styleable.expandableLayout_ael_orientation, VERTICAL);
+        defaultChildIndex = a.getInteger(R.styleable.expandableLayout_ael_defaultChildIndex,
+                Integer.MAX_VALUE);
+        defaultChildPosition = a.getInteger(R.styleable.expandableLayout_ael_defaultPosition,
+                Integer.MIN_VALUE);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_ael_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
         interpolator = Utils.createInterpolator(interpolatorType);
@@ -107,10 +119,18 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (isArranged) {
             return;
         }
+
         if (isExpanded) {
             setLayoutSize(layoutSize);
         } else {
             setLayoutSize(closePosition);
+        }
+        final int childNumbers = childPositionList.size();
+        if (childNumbers > defaultChildIndex && childNumbers > 0) {
+            moveChild(defaultChildIndex, 0, null);
+        }
+        if (defaultChildPosition > 0 && layoutSize >= defaultChildPosition && layoutSize > 0) {
+            move(defaultChildPosition, 0, null);
         }
         isArranged = true;
 
@@ -168,7 +188,8 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (isAnimating) {
             return;
         }
-        createExpandAnimator(getCurrentPosition(), layoutSize).start();
+        createExpandAnimator(getCurrentPosition(), layoutSize,
+                duration, interpolator).start();
     }
 
     /**
@@ -179,17 +200,18 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (isAnimating) {
             return;
         }
-        createExpandAnimator(getCurrentPosition(), closePosition).start();
+        createExpandAnimator(getCurrentPosition(), closePosition,
+                duration, interpolator).start();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void initLayout() {
+    public void initLayout(final boolean isMaintain) {
         closePosition = 0;
         layoutSize = 0;
-        isArranged = false;
+        isArranged = isMaintain;
         isCalculatedSize = false;
         savedState = null;
 
@@ -214,6 +236,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     @Override
     public void setExpanded(boolean expanded) {
         isExpanded = expanded;
+        isArranged = false;
         requestLayout();
     }
 
@@ -234,30 +257,52 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     }
 
     /**
+     * @param position
+     * @see #move(int, long, TimeInterpolator)
+     */
+    public void move(int position) {
+        move(position, duration, interpolator);
+    }
+
+    /**
      * Moves to position
      *
      * @param position
+     * @param duration
+     * @param interpolator
      */
-    public void move(int position) {
+    public void move(int position, long duration, TimeInterpolator interpolator) {
         if (isAnimating) {
             return;
         }
         if (0 > position || layoutSize < position) {
             return;
         }
-        createExpandAnimator(getCurrentPosition(), position).start();
+        createExpandAnimator(getCurrentPosition(), position,
+                duration, interpolator).start();
+    }
+
+    /**
+     * @param index child view index
+     * @see #moveChild(int, long, TimeInterpolator)
+     */
+    public void moveChild(int index) {
+        moveChild(index, duration, interpolator);
     }
 
     /**
      * Moves to bottom(VERTICAL) or right(HORIZONTAL) of child view
      *
-     * @param index child view index
+     * @param index        index child view index
+     * @param duration
+     * @param interpolator
      */
-    public void moveChild(int index) {
+    public void moveChild(int index, long duration, TimeInterpolator interpolator) {
         if (isAnimating) {
             return;
         }
-        createExpandAnimator(getCurrentPosition(), childPositionList.get(index)).start();
+        createExpandAnimator(getCurrentPosition(), childPositionList.get(index),
+                duration, interpolator).start();
     }
 
     /**
@@ -325,10 +370,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         this.closePosition = getChildPosition(childIndex);
     }
 
-    private void updateLayout() {
-        super.requestLayout();
-    }
-
     private boolean isVertical() {
         return orientation == VERTICAL;
     }
@@ -348,9 +389,12 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      *
      * @param from
      * @param to
+     * @param duration
+     * @param interpolator
      * @return
      */
-    private ValueAnimator createExpandAnimator(final int from, final int to) {
+    private ValueAnimator createExpandAnimator(
+            final int from, final int to, final long duration, final TimeInterpolator interpolator) {
         final ValueAnimator valueAnimator = ValueAnimator.ofInt(from, to);
         valueAnimator.setDuration(duration);
         valueAnimator.setInterpolator(interpolator);
@@ -362,7 +406,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                 } else {
                     getLayoutParams().width = (int) animator.getAnimatedValue();
                 }
-                updateLayout();
+                requestLayout();
             }
         });
         valueAnimator.addListener(new AnimatorListenerAdapter() {
