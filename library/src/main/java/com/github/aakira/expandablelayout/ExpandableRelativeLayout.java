@@ -208,10 +208,10 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * {@inheritDoc}
      */
     @Override
-    public void initLayout() {
+    public void initLayout(final boolean isMaintain) {
         closePosition = 0;
         layoutSize = 0;
-        isArranged = false;
+        isArranged = isMaintain;
         isCalculatedSize = false;
         savedState = null;
 

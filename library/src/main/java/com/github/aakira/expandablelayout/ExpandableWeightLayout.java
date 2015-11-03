@@ -175,9 +175,9 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      * {@inheritDoc}
      */
     @Override
-    public void initLayout() {
+    public void initLayout(final boolean isMaintain) {
         layoutWeight = 0;
-        isArranged = false;
+        isArranged = isMaintain;
         isCalculatedSize = false;
         savedState = null;
 
