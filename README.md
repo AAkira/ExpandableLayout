@@ -159,6 +159,22 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
     }
 });
 ```
+* `ExpandableLayoutListenerAdapter`
+ - You can set listeners only you need. 
+
+```java
+
+expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
+    @Override
+    public void onPreOpen() {
+    }
+
+    @Override
+    public void onPreClose() {
+    }
+});
+
+```
 
 ### Attributes
 
@@ -166,6 +182,8 @@ expandableLayout.setListener(new ExpandableLayoutListener() {
 |:-:|:-:|
 |ael_duration|The length of the expand or collapse animation|
 |ael_expanded|The layout is expanded if you set true|
+|ael_defaultChildIndex|The layout is expanded at index of child view. (Only `ExpandableRelativeLayout`)|
+|ael_defaultPosition|The layout is expanded at the position. (Only `ExpandableRelativeLayout`)|
 |ael_orientation|The orientation of animation(horizontal \| vertical)|
 |ael_interpolator|Sets [interpolator](#interpolator)|
 
@@ -211,7 +229,7 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.3.0@aar'
+	compile 'com.github.aakira:expandable-layout:1.4.0@aar'
 }
 ```
 
