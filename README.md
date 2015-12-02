@@ -54,10 +54,10 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
     android:id="@+id/expandableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:expanded="false"
-    app:duration="500"
-    app:interpolator="bounce"
-    app:orientation="vertical">
+    app:ael_expanded="false"
+    app:ael_duration="500"
+    app:ael_interpolator="bounce"
+    app:ael_orientation="vertical">
 
     <TextView
         android:id="@+id/text"
@@ -110,8 +110,8 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        app:duration="1000"
-        app:interpolator="anticipateOvershoot">
+        app:ael_duration="1000"
+        app:ael_interpolator="anticipateOvershoot">
 
         <ImageView
             android:layout_width="match_parent"
