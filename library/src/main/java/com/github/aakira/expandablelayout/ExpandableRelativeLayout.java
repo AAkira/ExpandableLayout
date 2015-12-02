@@ -402,9 +402,9 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationUpdate(final ValueAnimator animator) {
                 if (isVertical()) {
-                    getLayoutParams().height = (int) animator.getAnimatedValue();
+                   getLayoutParams().height = Integer.parseInt(animator.getAnimatedValue().toString());
                 } else {
-                    getLayoutParams().width = (int) animator.getAnimatedValue();
+                   getLayoutParams().width = Integer.parseInt(animator.getAnimatedValue().toString());
                 }
                 requestLayout();
             }

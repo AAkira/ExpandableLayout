@@ -244,8 +244,8 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                 if (!isWeightLayout) {
                     return;
                 }
-                ((LinearLayout.LayoutParams) getLayoutParams()).weight =
-                        (float) animation.getAnimatedValue();
+                ((LinearLayout.LayoutParams) getLayoutParams()).weight = Float
+								.parseFloat(animation.getAnimatedValue().toString());
                 updateLayout();
             }
         });
