@@ -109,7 +109,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                 }
                 childPositionList.add(sumSize + childSize + childMargin);
             }
-            layoutSize = getCurrentPosition();
+            layoutSize = childPositionList.get(childPositionList.size() - 1);
 
             if (0 < layoutSize) {
                 isCalculatedSize = true;
