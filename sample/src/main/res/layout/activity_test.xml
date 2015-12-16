@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/expandButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/white"
+        android:text="button" />
+
+    <Button
+        android:id="@+id/variableButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/white"
+        android:text="variabl" />
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/expandButton"
+        app:ael_duration="350"
+        app:ael_expanded="false"
+        app:ael_interpolator="fastOutSlowIn"
+        app:ael_orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_brown_500"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/material_amber_200"
+                android:gravity="center"
+                android:padding="@dimen/margin_normal"
+                android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.
+                 sample.sample.sample.sample.sample.sample.sample.sample.sample.sample. hoge"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/material_blue_200"
+                android:gravity="center"
+                android:padding="@dimen/margin_normal"
+                android:text="foo.foo.foo.foo.foo.foo.foo.foo.foo.foo.
+                 foo.foo.foo.foo.foo.foo.foo.foo.foo.foo. hoge"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearLayout"
+            android:background="@color/material_orange_200"
+            android:gravity="center"
+            android:padding="@dimen/margin_normal"
+            android:text="bar.bar.bar.bar.bar.bar.bar.bar.bar.
+                 bar.bar.bar.bar.bar.bar.bar.bar. hoge"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+</RelativeLayout>

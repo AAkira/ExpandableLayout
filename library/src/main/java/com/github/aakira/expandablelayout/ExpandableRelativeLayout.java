@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
@@ -110,6 +111,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                 childPositionList.add(sumSize + childSize + childMargin);
             }
             layoutSize = childPositionList.get(childPositionList.size() - 1);
+            Log.v("TAG", "layoutsize: " + layoutSize + ", measuredHeight: " + getMeasuredHeight());
 
             if (0 < layoutSize) {
                 isCalculatedSize = true;
@@ -185,6 +187,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     @Override
     public void expand() {
+        Log.i("TAG", "layoutsize: " + layoutSize + ", measuredHeight: " + getMeasuredHeight());
         if (isAnimating) {
             return;
         }
