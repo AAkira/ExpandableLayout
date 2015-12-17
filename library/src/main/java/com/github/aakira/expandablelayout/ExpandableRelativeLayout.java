@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
@@ -96,6 +97,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             int sumSize = 0;
             View view;
             LayoutParams params;
+            // At this point you just iterate through all children and don't take into account, their position to each other
             for (int i = 0; i < getChildCount(); i++) {
                 view = getChildAt(i);
                 params = (LayoutParams) view.getLayoutParams();
@@ -111,7 +113,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                 childPositionList.add(sumSize + childSize + childMargin);
             }
             layoutSize = childPositionList.get(childPositionList.size() - 1);
-            Log.v("TAG", "layoutsize: " + layoutSize + ", measuredHeight: " + getMeasuredHeight());
+            Log.d("TAG", "layoutsize: " + layoutSize + ", measuredHeight: " + super.getMeasuredHeight());
 
             if (0 < layoutSize) {
                 isCalculatedSize = true;
@@ -146,7 +148,17 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     protected Parcelable onSaveInstanceState() {
         final Parcelable parcelable = super.onSaveInstanceState();
         final ExpandableSavedState ss = new ExpandableSavedState(parcelable);
+        /**At this point is the bug mentioned by #34
+         You should probably add this line (I did not test this !)
+         Reason is that the System will use your CREATOR field to retain the Layout
+         In your Constructor you try to read the weight, since you did not set it, Appllication will crash.
+
+         === This is just my understanding, I might still be wrong here === **/
+        ss.setWeight((float) 0.0);
+
+
         ss.setSize(getCurrentPosition());
+
         return ss;
     }
 
@@ -372,7 +384,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void setClosePositionIndex(final int childIndex) {
         this.closePosition = getChildPosition(childIndex);
     }
-
     private boolean isVertical() {
         return orientation == VERTICAL;
     }

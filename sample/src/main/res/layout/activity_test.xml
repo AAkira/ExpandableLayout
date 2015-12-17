@@ -1,74 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/expandButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:background="@drawable/white"
-        android:text="button" />
+        android:text="button toggle" />
 
-    <Button
-        android:id="@+id/variableButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/white"
-        android:text="variabl" />
 
     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
         android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/expandButton"
         app:ael_duration="350"
         app:ael_expanded="false"
         app:ael_interpolator="fastOutSlowIn"
         app:ael_orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/material_brown_500"
-            android:orientation="vertical">
-
+        <!-- Since its a RelativeLayout i assumed I could use all tags
+             In your Readme it just says orientation is only for the direction of animation
+             ========If I put both text views into a separate Layout it will work=========== !-->
             <TextView
                 android:id="@+id/text"
-                android:layout_width="match_parent"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:background="@color/material_amber_200"
                 android:gravity="center"
                 android:padding="@dimen/margin_normal"
-                android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.
-                 sample.sample.sample.sample.sample.sample.sample.sample.sample.sample. hoge"
+                android:text="sample.sample.sample. hoge"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-
+            <!-- placing this text view on right hand side of first text view !-->
             <TextView
                 android:id="@+id/text2"
-                android:layout_width="match_parent"
+                android:layout_width="160dp"
                 android:layout_height="150dp"
                 android:background="@color/material_blue_200"
+                android:layout_toRightOf="@id/text"
+                android:layout_toEndOf="@id/text"
                 android:gravity="center"
                 android:padding="@dimen/margin_normal"
                 android:text="foo.foo.foo.foo.foo.foo.foo.foo.foo.foo.
                  foo.foo.foo.foo.foo.foo.foo.foo.foo.foo. hoge"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/text3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/linearLayout"
+            android:layout_below="@id/text"
             android:background="@color/material_orange_200"
             android:gravity="center"
             android:padding="@dimen/margin_normal"
@@ -77,4 +62,9 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
-</RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/material_pink_900" />
+</LinearLayout>
