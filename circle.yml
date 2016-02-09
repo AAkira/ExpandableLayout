@@ -13,11 +13,11 @@ dependencies:
 
 test:
   pre:
-    - emulator -avd circleci-android22 -no-skin -no-audio -no-window:
+    - emulator -avd circleci-android21 -no-skin -no-audio -no-window:
         background: true
         parallel: true
     - circle-android wait-for-boot
   override:
     - ./gradlew connectedAndroidTest -PdisablePreDex
   post:
-    - cp -R ./library/build/reports/tests/release/* $CIRCLE_ARTIFACTS
+    - cp -R ./library/build/reports/androidTests/connected/* $CIRCLE_ARTIFACTS
