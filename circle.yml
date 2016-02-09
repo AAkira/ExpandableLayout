@@ -20,4 +20,4 @@ test:
   override:
     - ./gradlew connectedAndroidTest -PdisablePreDex
   post:
-    - cp -R ./mobile/build/reports/androidTests/connected/flavors/PRODUCT/* $CIRCLE_ARTIFACTS
+    - cp -R ./library/build/reports/tests/release/* $CIRCLE_ARTIFACTS
