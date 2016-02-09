@@ -9,6 +9,8 @@ android {
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode VERSION_CODE as int
         versionName VERSION_NAME
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -20,6 +22,10 @@ android {
 
 dependencies {
     compile "com.android.support:appcompat-v7:$SUPPORT_APP_COMPAT_VERSION"
+    androidTestCompile "com.android.support:support-annotations:$SUPPORT_APP_COMPAT_VERSION"
+    androidTestCompile "com.android.support.test:runner:$SUPPORT_TEST_VERSION"
+    androidTestCompile "com.android.support.test:rules:$SUPPORT_TEST_VERSION"
+    androidTestCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
 }
 
 android.libraryVariants.all { variant ->
