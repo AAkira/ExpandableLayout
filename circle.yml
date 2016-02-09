@@ -1,0 +1,23 @@
+machine:
+  timezone: Asia/Tokyo
+  java:
+    version: openjdk7
+  environment:
+    JAVA_OPTS: "-Xms256m -Xmx1024m -XX:MaxPermSize=512m"
+    ADB_INSTALL_TIMEOUT: 8
+
+dependencies:
+  cache_directories:
+    - ~/.android
+    - /usr/local/android-sdk-linux
+
+test:
+  pre:
+    - emulator -avd circleci-android22 -no-skin -no-audio -no-window:
+        background: true
+        parallel: true
+    - circle-android wait-for-boot
+  override:
+    - ./gradlew connectedAndroidTest -PdisablePreDex
+  post:
+    - cp -R ./mobile/build/reports/androidTests/connected/flavors/PRODUCT/* $CIRCLE_ARTIFACTS
