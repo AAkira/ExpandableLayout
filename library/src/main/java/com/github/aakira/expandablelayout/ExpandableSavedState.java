@@ -38,6 +38,7 @@ public class ExpandableSavedState extends View.BaseSavedState {
     public void writeToParcel(Parcel out, int flags) {
         super.writeToParcel(out, flags);
         out.writeInt(this.size);
+        out.writeFloat(this.weight);
     }
 
     public static final Creator<ExpandableSavedState> CREATOR =

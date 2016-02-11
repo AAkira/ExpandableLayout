@@ -3,6 +3,7 @@
 An android library that brings the expandable layout with various animation.
 You can include optional contents and use everywhere.
 
+[![Circle CI](https://circleci.com/gh/AAkira/ExpandableLayout.svg?style=shield&circle-token=cb7464e0215aaecb740936d1d68010ee0ffd4806)](https://circleci.com/gh/AAkira/ExpandableLayout)
 [![Platform](http://img.shields.io/badge/platform-android-brightgreen.svg?style=flat)](http://developer.android.com/index.html)
 [![Language](http://img.shields.io/badge/language-java-orange.svg?style=flat)](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 [![License](http://img.shields.io/badge/license-apache2.0-lightgrey.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
@@ -229,7 +230,7 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.4.1@aar'
+	compile 'com.github.aakira:expandable-layout:1.4.2@aar'
 }
 ```
 
