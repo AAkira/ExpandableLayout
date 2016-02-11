@@ -20,7 +20,7 @@ dependencies {
     androidTestCompile "com.android.support:support-annotations:$SUPPORT_APP_COMPAT_VERSION"
     androidTestCompile "com.android.support.test:runner:$SUPPORT_TEST_VERSION"
     androidTestCompile "com.android.support.test:rules:$SUPPORT_TEST_VERSION"
-    androidTestCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
 }
 
 def getBintrayUserProperty() {
