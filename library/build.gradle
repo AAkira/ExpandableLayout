@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -9,36 +10,41 @@ android {
         targetSdkVersion TARGET_SDK_VERSION as int
         versionCode VERSION_CODE as int
         versionName VERSION_NAME
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 }
 
 dependencies {
     compile "com.android.support:appcompat-v7:$SUPPORT_APP_COMPAT_VERSION"
+    androidTestCompile "com.android.support:support-annotations:$SUPPORT_APP_COMPAT_VERSION"
+    androidTestCompile "com.android.support.test:runner:$SUPPORT_TEST_VERSION"
+    androidTestCompile "com.android.support.test:rules:$SUPPORT_TEST_VERSION"
+    androidTestCompile "org.hamcrest:hamcrest-library:$HAMCREST_VERSION"
 }
 
-android.libraryVariants.all { variant ->
-    if (variant.buildType.isDebuggable()) {
-        return; // Skip debug builds.
-    }
-    task("javadoc${variant.name.capitalize()}", type: Javadoc) {
-        description "Generates Javadoc for $variant.name."
-        source = variant.javaCompile.source
-        ext.androidJar = System.getenv("ANDROID_HOME") + "/platforms/${android.compileSdkVersion}/android.jar"
-        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
-    }
-
-    task("bundleJavadoc${variant.name.capitalize()}", type: Jar) {
-        description "Bundles Javadoc into zip for $variant.name."
-        classifier = "javadoc"
-        from tasks["javadoc${variant.name.capitalize()}"]
-    }
+def getBintrayUserProperty() {
+    return hasProperty('bintrayUser') ? bintrayUser : ""
 }
 
-apply from: 'android-artifacts.gradle'
-apply from: 'bintray-publish.gradle'
+def getBintrayApiKeyProperty() {
+    return hasProperty('bintrayApiKey') ? bintrayApiKey : ""
+}
+
+publish {
+    userOrg = POM_DEVELOPER_ID
+    repoName = 'maven'
+    groupId = GROUP
+    artifactId = ARTIFACT_ID
+    publishVersion = VERSION_NAME
+    licences = ['Apache-2.0']
+    desc = POM_DESCRIPTION
+    website = POM_URL
+    issueTracker = ISSUE_URL
+    repository = POM_SCM_URL
+    autoPublish = false
+    bintrayUser = bintrayUserProperty
+    bintrayKey = bintrayApiKeyProperty
+    dryRun = false
+    publications = ['maven']
+}
