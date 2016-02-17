@@ -11,8 +11,6 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
@@ -46,6 +44,13 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
     private boolean isAnimating = false;
+    /**
+     * view size of children
+     **/
+    private List<Integer> childSizeList = new ArrayList<>();
+    /**
+     * view position top or left of children
+     **/
     private List<Integer> childPositionList = new ArrayList<>();
 
     public ExpandableRelativeLayout(final Context context) {
@@ -90,28 +95,19 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         if (!isCalculatedSize) {
-            // calculate this layout size
-            childPositionList.clear();
-            int childSize;
-            int childMargin;
-            int sumSize = 0;
+            // calculate the size of layout which is children and self.
+            childSizeList.clear();
             View view;
             LayoutParams params;
             for (int i = 0; i < getChildCount(); i++) {
                 view = getChildAt(i);
                 params = (LayoutParams) view.getLayoutParams();
 
-                childSize = isVertical()
-                        ? view.getMeasuredHeight() : view.getMeasuredWidth();
-                childMargin = isVertical()
-                        ? params.topMargin + params.bottomMargin
-                        : params.leftMargin + params.rightMargin;
-                if (0 < i) {
-                    sumSize = childPositionList.get(i - 1);
-                }
-                childPositionList.add(sumSize + childSize + childMargin);
+                childSizeList.add(isVertical()
+                        ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
+                        : view.getMeasuredWidth() + params.leftMargin + params.rightMargin);
             }
-            layoutSize = childPositionList.get(childPositionList.size() - 1);
+            layoutSize = getCurrentPosition();
 
             if (0 < layoutSize) {
                 isCalculatedSize = true;
@@ -121,13 +117,12 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (isArranged) {
             return;
         }
-
         if (isExpanded) {
             setLayoutSize(layoutSize);
         } else {
             setLayoutSize(closePosition);
         }
-        final int childNumbers = childPositionList.size();
+        final int childNumbers = childSizeList.size();
         if (childNumbers > defaultChildIndex && childNumbers > 0) {
             moveChild(defaultChildIndex, 0, null);
         }
@@ -140,6 +135,17 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             return;
         }
         setLayoutSize(savedState.getSize());
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+
+        childPositionList.clear();
+        // calculate the top position of layout which is children
+        for (int i = 0; i < getChildCount(); i++) {
+            childPositionList.add((int) (isVertical() ? getChildAt(i).getY() : getChildAt(i).getX()));
+        }
     }
 
     @Override
@@ -295,7 +301,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     /**
      * Moves to bottom(VERTICAL) or right(HORIZONTAL) of child view
      *
-     * @param index        index child view index
+     * @param index index child view index
      * @param duration
      * @param interpolator
      */
@@ -303,7 +309,8 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (isAnimating) {
             return;
         }
-        createExpandAnimator(getCurrentPosition(), childPositionList.get(index),
+        createExpandAnimator(getCurrentPosition(),
+                getChildPosition(index) + (isVertical() ? getPaddingBottom() : getPaddingRight()),
                 duration, interpolator).start();
     }
 
@@ -324,10 +331,10 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * @return position from top or left
      */
     public int getChildPosition(final int index) {
-        if (0 > index || childPositionList.size() <= index) {
+        if (0 > index || childSizeList.size() <= index) {
             throw new IllegalArgumentException("There aren't the view having this index.");
         }
-        return childPositionList.get(index);
+        return childPositionList.get(index) + childSizeList.get(index);
     }
 
     /**
@@ -371,6 +378,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void setClosePositionIndex(final int childIndex) {
         this.closePosition = getChildPosition(childIndex);
     }
+
     private boolean isVertical() {
         return orientation == VERTICAL;
     }
