@@ -1,5 +1,5 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -13,37 +13,21 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 
 dependencies {
+    compile project(':library')
+
     compile "com.android.support:appcompat-v7:$SUPPORT_APP_COMPAT_VERSION"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     androidTestCompile "com.android.support:support-annotations:$SUPPORT_APP_COMPAT_VERSION"
     androidTestCompile "com.android.support.test:runner:$SUPPORT_TEST_VERSION"
     androidTestCompile "com.android.support.test:rules:$SUPPORT_TEST_VERSION"
-}
-
-def getBintrayUserProperty() {
-    return hasProperty('bintrayUser') ? bintrayUser : ""
-}
-
-def getBintrayApiKeyProperty() {
-    return hasProperty('bintrayApiKey') ? bintrayApiKey : ""
-}
-
-publish {
-    userOrg = POM_DEVELOPER_ID
-    repoName = 'maven'
-    groupId = GROUP
-    artifactId = ARTIFACT_ID
-    publishVersion = VERSION_NAME
-    licences = ['Apache-2.0']
-    desc = POM_DESCRIPTION
-    website = POM_URL
-    issueTracker = ISSUE_URL
-    repository = POM_SCM_URL
-    autoPublish = false
-    bintrayUser = bintrayUserProperty
-    bintrayKey = bintrayApiKeyProperty
-    dryRun = false
-    publications = ['maven']
+    androidTestCompile "com.android.support.test.espresso:espresso-core:$ESPRESSO_VERSION"
 }
