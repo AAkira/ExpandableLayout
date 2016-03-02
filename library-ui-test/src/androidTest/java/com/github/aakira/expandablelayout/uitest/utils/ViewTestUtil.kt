@@ -6,7 +6,7 @@ import org.hamcrest.TypeSafeMatcher
 
 fun orMoreHeight(height: Int) = object : TypeSafeMatcher<View>() {
     override fun describeTo(description: Description) {
-        description.appendText(String.format("The height of this layout" +
+        description.appendText(String.format("The height of this layout " +
                 "is not or more height (%d).", height))
     }
 
