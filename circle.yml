@@ -22,5 +22,8 @@ test:
     - sleep 30
     - adb shell input keyevent 82
     - ./gradlew connectedAndroidTest -PdisablePreDex
-  post:
-    - cp -R ./library/build/reports/androidTests/connected/* $CIRCLE_ARTIFACTS
+
+general:
+  artifacts:
+    - "./library/build/reports/androidTests/connected"
+    - "./library-ui-test/build/reports/androidTests/connected"
