@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,10 +77,10 @@ public class ExpandableLayoutDelegate {
             int childMargin;
             int sumSize = 0;
             View view;
-            RelativeLayout.LayoutParams params;
+            ViewGroup.MarginLayoutParams params;
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 view = viewGroup.getChildAt(i);
-                params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
 
                 childSize = isVertical()
                         ? view.getMeasuredHeight() : view.getMeasuredWidth();
