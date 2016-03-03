@@ -9,11 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import com.github.aakira.expandablelayout.ExpandableFrameLayout;
+
 import java.util.ArrayList;
 
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import jp.android.aakira.sample.expandablelayout.util.DividerItemDecoration;
 import jp.android.aakira.sample.expandablelayout.R;
+import jp.android.aakira.sample.expandablelayout.util.DividerItemDecoration;
 
 public class ExampleSearchActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,7 +23,7 @@ public class ExampleSearchActivity extends AppCompatActivity implements View.OnC
     }
 
     private Button mExpandButton;
-    private ExpandableRelativeLayout mExpandLayout;
+    private ExpandableFrameLayout mExpandLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class ExampleSearchActivity extends AppCompatActivity implements View.OnC
         getSupportActionBar().setTitle(ExampleSearchActivity.class.getSimpleName());
 
         mExpandButton = (Button) findViewById(R.id.expandButton);
-        mExpandLayout = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout);
+        mExpandLayout = (ExpandableFrameLayout) findViewById(R.id.expandableLayout);
         mExpandButton.setOnClickListener(this);
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

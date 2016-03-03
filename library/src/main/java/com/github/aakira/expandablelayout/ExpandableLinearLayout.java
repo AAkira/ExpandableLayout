@@ -7,29 +7,29 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
-public class ExpandableRelativeLayout extends RelativeLayout implements ExpandableLayout {
+public class ExpandableLinearLayout extends LinearLayout implements ExpandableLayout {
 
     private ExpandableLayoutDelegate mDelegate;
 
-    public ExpandableRelativeLayout(final Context context) {
+    public ExpandableLinearLayout(final Context context) {
         this(context, null);
     }
 
-    public ExpandableRelativeLayout(final Context context, final AttributeSet attrs) {
+    public ExpandableLinearLayout(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ExpandableRelativeLayout(final Context context, final AttributeSet attrs,
-                                    final int defStyleAttr) {
+    public ExpandableLinearLayout(final Context context, final AttributeSet attrs,
+                                 final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ExpandableRelativeLayout(final Context context, final AttributeSet attrs,
-                                    final int defStyleAttr, final int defStyleRes) {
+    public ExpandableLinearLayout(final Context context, final AttributeSet attrs,
+                                 final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr);
     }
@@ -170,13 +170,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     public void moveChild(int index, long duration, TimeInterpolator interpolator) {
         mDelegate.moveChild(index, duration, interpolator);
-    }
-
-    /**
-     * @deprecated Use {@link #setExpanseOrientation(int)} instead
-     */
-    public void setOrientation(@Orientation final int orientation) {
-        setExpanseOrientation(orientation);
     }
 
     /**

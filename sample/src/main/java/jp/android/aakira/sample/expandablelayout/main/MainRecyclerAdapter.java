@@ -9,11 +9,12 @@ import android.widget.TextView;
 
 import java.util.Map;
 
-import jp.android.aakira.sample.expandablelayout.expandablelayout.ExpandableLayoutActivity;
-import jp.android.aakira.sample.expandablelayout.expandableweight.ExpandableWeightActivity;
 import jp.android.aakira.sample.expandablelayout.R;
 import jp.android.aakira.sample.expandablelayout.examplerecyclerview.RecyclerViewActivity;
 import jp.android.aakira.sample.expandablelayout.examplesearch.ExampleSearchActivity;
+import jp.android.aakira.sample.expandablelayout.expandablelayout.ExpandableLayoutActivity;
+import jp.android.aakira.sample.expandablelayout.expandablelayout.ExpandableLinearLayoutActivity;
+import jp.android.aakira.sample.expandablelayout.expandableweight.ExpandableWeightActivity;
 
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder> {
 
@@ -41,12 +42,15 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
                         ExpandableLayoutActivity.startActivity(context);
                         break;
                     case 1:
-                        ExpandableWeightActivity.startActivity(context);
+                        ExpandableLinearLayoutActivity.startActivity(context);
                         break;
                     case 2:
-                        RecyclerViewActivity.startActivity(context);
+                        ExpandableWeightActivity.startActivity(context);
                         break;
                     case 3:
+                        RecyclerViewActivity.startActivity(context);
+                        break;
+                    case 4:
                         ExampleSearchActivity.startActivity(context);
                         break;
                 }
