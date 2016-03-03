@@ -193,10 +193,21 @@ public class ExpandableLayoutDelegate {
         this.interpolator = interpolator;
     }
 
+    /**
+     * @param position
+     * @see #move(int, long, TimeInterpolator)
+     */
     public void move(int position) {
         move(position, duration, interpolator);
     }
 
+    /**
+     * Moves to position
+     *
+     * @param position
+     * @param duration
+     * @param interpolator
+     */
     public void move(int position, long duration, TimeInterpolator interpolator) {
         if (isAnimating) {
             return;
@@ -208,10 +219,21 @@ public class ExpandableLayoutDelegate {
                 duration, interpolator).start();
     }
 
+    /**
+     * @param index child view index
+     * @see #moveChild(int, long, TimeInterpolator)
+     */
     public void moveChild(int index) {
         moveChild(index, duration, interpolator);
     }
 
+    /**
+     * Moves to bottom(VERTICAL) or right(HORIZONTAL) of child view
+     *
+     * @param index        index child view index
+     * @param duration
+     * @param interpolator
+     */
     public void moveChild(int index, long duration, TimeInterpolator interpolator) {
         if (isAnimating) {
             return;
@@ -225,7 +247,7 @@ public class ExpandableLayoutDelegate {
      *
      * @param orientation Set 0 if orientation is horizontal, 1 if orientation is vertical
      */
-    public void setOrientation(@ExpandableLayout.Orientation final int orientation) {
+    public void setExpanseOrientation(@ExpandableLayout.Orientation final int orientation) {
         this.orientation = orientation;
     }
 

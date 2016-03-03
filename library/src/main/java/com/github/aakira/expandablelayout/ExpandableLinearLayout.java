@@ -7,29 +7,29 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
-public class ExpandableFrameLayout extends FrameLayout implements ExpandableLayout {
+public class ExpandableLinearLayout extends LinearLayout implements ExpandableLayout {
 
     private ExpandableLayoutDelegate mDelegate;
 
-    public ExpandableFrameLayout(final Context context) {
+    public ExpandableLinearLayout(final Context context) {
         this(context, null);
     }
 
-    public ExpandableFrameLayout(final Context context, final AttributeSet attrs) {
+    public ExpandableLinearLayout(final Context context, final AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ExpandableFrameLayout(final Context context, final AttributeSet attrs,
-                                    final int defStyleAttr) {
+    public ExpandableLinearLayout(final Context context, final AttributeSet attrs,
+                                 final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ExpandableFrameLayout(final Context context, final AttributeSet attrs,
-                                    final int defStyleAttr, final int defStyleRes) {
+    public ExpandableLinearLayout(final Context context, final AttributeSet attrs,
+                                 final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr);
     }

@@ -173,12 +173,19 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     }
 
     /**
+     * @deprecated Use {@link #setExpanseOrientation(int)} instead
+     */
+    public void setOrientation(@Orientation final int orientation) {
+        setExpanseOrientation(orientation);
+    }
+
+    /**
      * Sets orientation of expanse animation.
      *
      * @param orientation Set 0 if orientation is horizontal, 1 if orientation is vertical
      */
-    public void setOrientation(@Orientation final int orientation) {
-        mDelegate.setOrientation(orientation);
+    public void setExpanseOrientation(@Orientation final int orientation) {
+        mDelegate.setExpanseOrientation(orientation);
     }
 
     /**

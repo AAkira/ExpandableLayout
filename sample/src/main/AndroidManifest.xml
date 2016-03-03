@@ -20,6 +20,9 @@
             android:name=".expandablelayout.ExpandableLayoutActivity"
             android:label="@string/app_name" />
         <activity
+            android:name=".expandablelayout.ExpandableLinearLayoutActivity"
+            android:label="@string/app_name"/>
+        <activity
             android:name=".expandableweight.ExpandableWeightActivity"
             android:label="@string/app_name" />
         <activity

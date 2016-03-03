@@ -25,9 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
         Map<Integer, String> data = new HashMap<>();
         data.put(0, "Normal\n[ExpandableRelativeLayout]");
-        data.put(1, "Normal\n[ExpandableWeightLayout]");
-        data.put(2, "Example(RecyclerView)\n[ExpandableRelativeLayout]");
-        data.put(3, "Example(Search screen)\n[ExpandableRelativeLayout]");
+        data.put(1, "Normal\n[ExpandableLinearLayout]");
+        data.put(2, "Normal\n[ExpandableWeightLayout]");
+        data.put(3, "Example(RecyclerView)\n[ExpandableRelativeLayout]");
+        data.put(4, "Example(Search screen)\n[ExpandableFrameLayout]");
 
         recyclerView.setAdapter(new MainRecyclerAdapter(this, data));
     }
