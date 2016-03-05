@@ -23,13 +23,13 @@
         android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="30dp"
+        android:paddingBottom="@dimen/margin_large"
         app:ael_duration="350"
         app:ael_expanded="false"
         app:ael_interpolator="fastOutSlowIn"
         app:ael_orientation="vertical">
         <TextView
-            android:id="@+id/text"
+            android:id="@+id/child1"
             android:layout_width="80dp"
             android:layout_height="200dp"
             android:background="@color/material_amber_200"
@@ -39,11 +39,11 @@
             android:textColor="@color/white"
             android:textSize="16sp"/>
         <TextView
-            android:id="@+id/text2"
+            android:id="@+id/child2"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:background="@color/material_blue_200"
-            android:layout_toRightOf="@id/text"
+            android:layout_toRightOf="@id/child1"
             android:gravity="center"
             android:padding="@dimen/margin_normal"
             android:text="foo.foo.foo.foo.foo.foo.foo.foo.foo.foo.
@@ -52,10 +52,10 @@
             android:textSize="16sp"/>
 
         <TextView
-            android:id="@+id/text3"
+            android:id="@+id/child3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text"
+            android:layout_below="@id/child1"
             android:background="@color/material_orange_200"
             android:gravity="center"
             android:padding="@dimen/margin_normal"
