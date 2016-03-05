@@ -28,8 +28,5 @@
         <activity
             android:name=".examplesearch.ExampleSearchActivity"
             android:label="@string/app_name" />
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/app_name" />
     </application>
 </manifest>
