@@ -10,7 +10,6 @@ import android.widget.TextView;
 import java.util.Map;
 
 import jp.android.aakira.sample.expandablelayout.R;
-import jp.android.aakira.sample.expandablelayout.TestActivity;
 import jp.android.aakira.sample.expandablelayout.examplerecyclerview.RecyclerViewActivity;
 import jp.android.aakira.sample.expandablelayout.examplesearch.ExampleSearchActivity;
 import jp.android.aakira.sample.expandablelayout.expandablelayout.ExpandableLayoutActivity;
@@ -49,9 +48,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
                         break;
                     case 3:
                         ExampleSearchActivity.startActivity(context);
-                        break;
-                    case 4:
-                        TestActivity.startActivity(context);
                         break;
                 }
             }
