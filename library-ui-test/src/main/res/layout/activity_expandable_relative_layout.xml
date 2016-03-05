@@ -76,7 +76,7 @@
         app:ael_orientation="vertical">
 
         <TextView
-            android:id="@+id/first"
+            android:id="@+id/child1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/material_cyan_500"
@@ -88,10 +88,10 @@
             android:textColor="@color/white"/>
 
         <TextView
-            android:id="@+id/second"
+            android:id="@+id/child2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/first"
+            android:layout_below="@id/child1"
             android:background="@color/material_blue_500"
             android:padding="@dimen/margin_small"
             android:text="
@@ -102,10 +102,10 @@
             android:textColor="@color/white"/>
 
         <TextView
-            android:id="@+id/third"
+            android:id="@+id/child3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/second"
+            android:layout_below="@id/child2"
             android:background="@color/material_indigo_500"
             android:padding="@dimen/margin_small"
             android:text="

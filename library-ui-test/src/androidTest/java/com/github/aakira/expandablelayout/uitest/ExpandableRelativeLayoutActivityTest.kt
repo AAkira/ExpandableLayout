@@ -42,7 +42,7 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
     }
 
     @Test
-    fun testExpandableLayout() {
+    fun testExpandableRelativeLayout() {
         val activity = activity
         val instrumentation = instrumentation
 
@@ -66,7 +66,7 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         instrumentation.runOnMainSync { expandableLayout.moveChild(0) }
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
-        onView(withId(R.id.first)).check(matches(equalHeight(expandableLayout)))
+        onView(withId(R.id.child1)).check(matches(equalHeight(expandableLayout)))
         Espresso.unregisterIdlingResources(idlingResource)
 
         // set close height
@@ -77,10 +77,10 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
         // second.height != 0 && first.height + second.height == expandableLayout.height
-        onView(withId(R.id.second)).check(matches(orMoreHeight(1)))
+        onView(withId(R.id.child2)).check(matches(orMoreHeight(1)))
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.first),
-                activity.findViewById(R.id.second)
+                activity.findViewById(R.id.child1),
+                activity.findViewById(R.id.child2)
         )))
         Espresso.unregisterIdlingResources(idlingResource)
 
@@ -89,7 +89,7 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
         // move to first position
-        onView(withId(R.id.first)).check(matches(equalHeight(expandableLayout)))
+        onView(withId(R.id.child1)).check(matches(equalHeight(expandableLayout)))
         Espresso.unregisterIdlingResources(idlingResource)
 
         // check toggle open (full)
@@ -98,9 +98,9 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         Espresso.registerIdlingResources(idlingResource)
         // move to first position
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.first),
-                activity.findViewById(R.id.second),
-                activity.findViewById(R.id.third)
+                activity.findViewById(R.id.child1),
+                activity.findViewById(R.id.child2),
+                activity.findViewById(R.id.child3)
         )))
         Espresso.unregisterIdlingResources(idlingResource)
     }
