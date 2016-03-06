@@ -22,7 +22,7 @@ fun equalHeight(height: Int) = object : TypeSafeMatcher<View>() {
     override fun matchesSafely(view: View) = view.height == height
 }
 
-fun equalHeight(vararg views: View) = object : TypeSafeMatcher<View>() {
+fun equalHeight(vararg views: View, margin: Int? = null) = object : TypeSafeMatcher<View>() {
     override fun describeTo(description: Description) {
         description.appendText(buildString {
             append("The height of this layout is not equal to view height(")
@@ -30,11 +30,25 @@ fun equalHeight(vararg views: View) = object : TypeSafeMatcher<View>() {
                 append(view.height)
                 if (i != views.size - 1) append(" + ")
             }
-            append(" = ")
-            append(views.sumBy { it.height })
+            margin?.let { append(" + margin:" + it) }
+            if (views.size > 0) {
+                append(" = ")
+                var sumHeight = views.sumBy { it.height }
+                margin?.let { sumHeight += it }
+                append(sumHeight)
+            }
             append(")")
         })
     }
 
-    override fun matchesSafely(view: View) = view.height == views.sumBy { it.height }
+    override fun matchesSafely(view: View) = view.height == views.sumBy { it.height } + (margin ?: 0)
+}
+
+fun equalWidth(width: Int) = object : TypeSafeMatcher<View>() {
+    override fun describeTo(description: Description) {
+        description.appendText(String.format("The width of this layout " +
+                "is not equal to width(%d).", width))
+    }
+
+    override fun matchesSafely(view: View) = view.width == width
 }
