@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+
+    <!-- expandable relative layout 2 -->
+    <dimen name="relative_layout_2_child_1_width">80dp</dimen>
+    <dimen name="relative_layout_2_child_1_height">200dp</dimen>
+    <dimen name="relative_layout_2_child_2_width">160dp</dimen>
+</resources>

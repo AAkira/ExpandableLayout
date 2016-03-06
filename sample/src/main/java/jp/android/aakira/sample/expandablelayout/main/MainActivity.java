@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.android.aakira.sample.expandablelayout.util.DividerItemDecoration;
 import jp.android.aakira.sample.expandablelayout.R;
+import jp.android.aakira.sample.expandablelayout.util.DividerItemDecoration;
 
 public class MainActivity extends AppCompatActivity {
 
