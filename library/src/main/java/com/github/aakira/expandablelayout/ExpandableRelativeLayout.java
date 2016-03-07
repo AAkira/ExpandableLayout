@@ -94,31 +94,45 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        if (!isCalculatedSize) {
-            // calculate the size of layout which is children and self.
-            childSizeList.clear();
-            View view;
-            LayoutParams params;
-            for (int i = 0; i < getChildCount(); i++) {
-                view = getChildAt(i);
-                params = (LayoutParams) view.getLayoutParams();
+        /**
+         * This line is called many times until {@link #onLayout(boolean, int, int, int, int)} is called.
+         * The last value is determined as the height of this view
+         */
+        if (!isArranged) layoutSize = getCurrentPosition();
 
-                childSizeList.add(isVertical()
-                        ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
-                        : view.getMeasuredWidth() + params.leftMargin + params.rightMargin);
-            }
-            layoutSize = getCurrentPosition();
+        if (isCalculatedSize) return;
+        // calculate a size of children
+        childSizeList.clear();
+        View view;
+        LayoutParams params;
+        for (int i = 0; i < getChildCount(); i++) {
+            view = getChildAt(i);
+            params = (LayoutParams) view.getLayoutParams();
 
-            if (0 < layoutSize) {
-                isCalculatedSize = true;
-            }
+            childSizeList.add(isVertical()
+                    ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
+                    : view.getMeasuredWidth() + params.leftMargin + params.rightMargin);
         }
+
+        if (0 < layoutSize) {
+            isCalculatedSize = true;
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
 
         if (isArranged) return;
 
-        if (isExpanded) {
-            setLayoutSize(layoutSize);
-        } else {
+        childPositionList.clear();
+        // calculate a top position of children
+        for (int i = 0; i < getChildCount(); i++) {
+            childPositionList.add((int) (isVertical() ? getChildAt(i).getY() : getChildAt(i).getX()));
+        }
+
+        // adjust default position if a user set a value.
+        if (!isExpanded) {
             setLayoutSize(closePosition);
         }
         final int childNumbers = childSizeList.size();
@@ -132,17 +146,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
         if (savedState == null) return;
         setLayoutSize(savedState.getSize());
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
-
-        childPositionList.clear();
-        // calculate the top position of layout which is children
-        for (int i = 0; i < getChildCount(); i++) {
-            childPositionList.add((int) (isVertical() ? getChildAt(i).getY() : getChildAt(i).getX()));
-        }
     }
 
     @Override
