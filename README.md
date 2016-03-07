@@ -239,7 +239,7 @@ dependencies {
 ### Akira Aratani
 
 * Twitter
- - https://twitter.com/akira_aratani
+ - [@_a_akira](https://twitter.com/_a_akira)
 * Mail
  - developer.a.akira@gmail.com
 
