@@ -300,17 +300,18 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * Moves to bottom(VERTICAL) or right(HORIZONTAL) of child view
+     * Sets 0 to {@param duration} if you want to move immediately.
      *
      * @param index        index child view index
      * @param duration
-     * @param interpolator
+     * @param interpolator nullable
      */
-    public void moveChild(int index, long duration, TimeInterpolator interpolator) {
+    public void moveChild(int index, long duration, @Nullable TimeInterpolator interpolator) {
         if (isAnimating) return;
 
         createExpandAnimator(getCurrentPosition(),
                 getChildPosition(index) + (isVertical() ? getPaddingBottom() : getPaddingRight()),
-                duration, interpolator).start();
+                duration, interpolator == null ? this.interpolator : interpolator).start();
     }
 
     /**
