@@ -26,12 +26,16 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     private int orientation;
     /**
      * You cannot define {@link #isExpanded}, {@link #defaultChildIndex}
-     * and {@link #defaultChildPosition} at the same time.
-     * {@link #defaultChildPosition} has priority over {@link #isExpanded}
+     * and {@link #defaultPosition} at the same time.
+     * {@link #defaultPosition} has priority over {@link #isExpanded}
      * and {@link #defaultChildIndex} if you set them at the same time.
+     * <p/>
+     * <p/>
+     * Priority
+     * {@link #defaultPosition} > {@link #defaultChildIndex} > {@link #isExpanded}
      */
     private int defaultChildIndex;
-    private int defaultChildPosition;
+    private int defaultPosition;
     /**
      * The close position is width from left of layout if orientation is horizontal.
      * The close position is height from top of layout if orientation is vertical.
@@ -82,7 +86,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         orientation = a.getInteger(R.styleable.expandableLayout_ael_orientation, VERTICAL);
         defaultChildIndex = a.getInteger(R.styleable.expandableLayout_ael_defaultChildIndex,
                 Integer.MAX_VALUE);
-        defaultChildPosition = a.getInteger(R.styleable.expandableLayout_ael_defaultPosition,
+        defaultPosition = a.getDimensionPixelSize(R.styleable.expandableLayout_ael_defaultPosition,
                 Integer.MIN_VALUE);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_ael_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
@@ -139,8 +143,8 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (childNumbers > defaultChildIndex && childNumbers > 0) {
             moveChild(defaultChildIndex, 0, null);
         }
-        if (defaultChildPosition > 0 && layoutSize >= defaultChildPosition && layoutSize > 0) {
-            move(defaultChildPosition, 0, null);
+        if (defaultPosition > 0 && layoutSize >= defaultPosition && layoutSize > 0) {
+            move(defaultPosition, 0, null);
         }
         isArranged = true;
 
