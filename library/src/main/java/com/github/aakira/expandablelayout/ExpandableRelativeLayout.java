@@ -99,12 +99,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        /**
-         * This line is called many times until {@link #onLayout(boolean, int, int, int, int)} is called.
-         * The last value is determined as the height of this view
-         */
-        if (!isArranged) layoutSize = getCurrentPosition();
-
         if (isCalculatedSize) return;
         // calculate a size of children
         childSizeList.clear();
@@ -129,6 +123,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         super.onLayout(changed, l, t, r, b);
 
         if (isArranged) return;
+        layoutSize = getCurrentPosition();
 
         childPositionList.clear();
         // calculate a top position of children
