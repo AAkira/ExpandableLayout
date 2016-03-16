@@ -19,6 +19,7 @@ You can include optional contents and use everywhere.
 ### Example
 
 ![ExampleRecyclerView][ExampleRecyclerView] ![ExampleSearch][ExampleSearch]
+![ExampleReadMore][ExampleReadMore]
 
 ## Usage
 
@@ -269,3 +270,4 @@ limitations under the License.
 [ExpandableWeightLayout]: /art/ExpandableWeightLayout.gif
 [ExampleSearch]: /art/ExampleSearch.gif
 [ExampleRecyclerView]: /art/ExampleRecyclerview_v1.1.gif
+[ExampleReadMore]: /art/ExampleReadMore.gif
