@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout
 import kotlin.properties.Delegates
 
-class ExpandableRelativeLayoutActivity2 : AppCompatActivity() {
+class ExpandableRelativeLayoutActivity3 : AppCompatActivity() {
 
     companion object {
 
         @JvmStatic fun startActivity(context: Context) {
-            context.startActivity(Intent(context, ExpandableRelativeLayoutActivity2::class.java))
+            context.startActivity(Intent(context, ExpandableRelativeLayoutActivity3::class.java))
         }
     }
 
@@ -20,11 +20,11 @@ class ExpandableRelativeLayoutActivity2 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_expandable_relative_layout_2)
-        supportActionBar?.title = ExpandableRelativeLayoutActivity2::class.java.simpleName
+        setContentView(R.layout.activity_expandable_relative_layout_3)
+        supportActionBar?.title = ExpandableRelativeLayoutActivity3::class.java.simpleName
 
         expandLayout = findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
         findViewById(R.id.expandButton)?.setOnClickListener { expandLayout.toggle() }
-        findViewById(R.id.moveChildButton)?.setOnClickListener { expandLayout.moveChild(1) }
+        findViewById(R.id.moveChildButton)?.setOnClickListener { expandLayout.moveChild(2) }
     }
 }
