@@ -104,5 +104,39 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 activity.findViewById(R.id.child3)
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+
+        // quick move to first layout using moveChild method
+        instrumentation.runOnMainSync { expandableLayout.moveChild(0, 0, null) }
+        idlingResource = ElapsedIdLingResource(0)
+        Espresso.registerIdlingResources(idlingResource)
+        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
+                activity.findViewById(R.id.child0)
+        )))
+        Espresso.unregisterIdlingResources(idlingResource)
+
+        // quick move to 200 using move method
+        instrumentation.runOnMainSync { expandableLayout.move(200, 0, null) }
+        idlingResource = ElapsedIdLingResource(0)
+        Espresso.registerIdlingResources(idlingResource)
+        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(200)))
+        Espresso.unregisterIdlingResources(idlingResource)
+
+        // quick collapse
+        instrumentation.runOnMainSync { expandableLayout.collapse(0, null) }
+        idlingResource = ElapsedIdLingResource(0)
+        Espresso.registerIdlingResources(idlingResource)
+        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
+        Espresso.unregisterIdlingResources(idlingResource)
+
+        // quick expand
+        instrumentation.runOnMainSync { expandableLayout.expand(0, null) }
+        idlingResource = ElapsedIdLingResource(0)
+        Espresso.registerIdlingResources(idlingResource)
+        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
+                activity.findViewById(R.id.child0),
+                activity.findViewById(R.id.child2),
+                activity.findViewById(R.id.child3)
+        )))
+        Espresso.unregisterIdlingResources(idlingResource)
     }
 }

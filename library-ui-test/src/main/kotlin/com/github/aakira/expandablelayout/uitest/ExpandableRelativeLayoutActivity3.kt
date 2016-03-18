@@ -25,6 +25,6 @@ class ExpandableRelativeLayoutActivity3 : AppCompatActivity() {
 
         expandLayout = findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
         findViewById(R.id.expandButton)?.setOnClickListener { expandLayout.toggle() }
-        findViewById(R.id.moveChildButton)?.setOnClickListener { expandLayout.moveChild(2) }
+        findViewById(R.id.moveChildButton)?.setOnClickListener { expandLayout.moveChild(2, 0, null) }
     }
 }
