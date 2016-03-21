@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    >
+
+    <Button
+        android:id="@+id/expandButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white"
+        android:text="button toggle"
+        />
+
+    <Button
+        android:id="@+id/moveWeightButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white"
+        android:text="move weight"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/material_teal_500"></View>
+
+        <com.github.aakira.expandablelayout.ExpandableWeightLayout
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:background="@color/material_light_green_500"
+            android:padding="@dimen/margin_normal"
+            app:ael_duration="1000"
+            app:ael_expanded="false"
+            app:ael_interpolator="anticipateOvershoot">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="
+    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
+    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
+    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
+    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
+    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
+    "
+                android:gravity="center"
+                android:textColor="#eee"/>
+        </com.github.aakira.expandablelayout.ExpandableWeightLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/material_teal_700"></View>
+    </LinearLayout>
+</LinearLayout>
