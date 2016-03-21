@@ -300,7 +300,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      *
      * @param position
      * @param duration
-     * @param interpolator nullable
+     * @param interpolator use the default interpolator if the argument is null.
      */
     public void move(int position, long duration, @Nullable TimeInterpolator interpolator) {
         if (isAnimating || 0 > position || layoutSize < position) return;
@@ -329,7 +329,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      *
      * @param index        index child view index
      * @param duration
-     * @param interpolator nullable
+     * @param interpolator use the default interpolator if the argument is null.
      */
     public void moveChild(int index, long duration, @Nullable TimeInterpolator interpolator) {
         if (isAnimating) return;
