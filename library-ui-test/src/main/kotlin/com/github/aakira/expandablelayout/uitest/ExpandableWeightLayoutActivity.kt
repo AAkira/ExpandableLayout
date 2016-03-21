@@ -25,6 +25,6 @@ class ExpandableWeightLayoutActivity : AppCompatActivity() {
 
         expandableLayout = findViewById(R.id.expandableLayout) as ExpandableWeightLayout
         findViewById(R.id.expandButton)?.setOnClickListener { expandableLayout.toggle() }
-        findViewById(R.id.moveWeightButton)?.setOnClickListener { expandableLayout.move(6f, 0, null) }
+        findViewById(R.id.moveWeightButton)?.setOnClickListener { expandableLayout.move(2f, 0, null) }
     }
 }

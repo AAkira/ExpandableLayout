@@ -29,7 +29,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
     private boolean isAnimating = false;
-    private boolean isWeightLayout = false;
 
     public ExpandableWeightLayout(final Context context) {
         this(context, null);
@@ -71,22 +70,17 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         if (!(getLayoutParams() instanceof LinearLayout.LayoutParams)) {
             throw new AssertionError("You must arrange in LinearLayout.");
         }
-        final float currentWeight = getCurrentWeight();
-        if (0 < currentWeight) {
-            isWeightLayout = 0 < currentWeight;
-        }
+        if (0 >= getCurrentWeight()) throw new AssertionError("You must set a weight than 0.");
+
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (!isWeightLayout) return;
 
         if (!isCalculatedSize) {
             layoutWeight = getCurrentWeight();
-            if (0 < layoutWeight) {
-                isCalculatedSize = true;
-            }
+            isCalculatedSize = true;
         }
 
         if (isArranged) return;
@@ -100,7 +94,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     @Override
     protected Parcelable onSaveInstanceState() {
         final Parcelable parcelable = super.onSaveInstanceState();
-        if (!isWeightLayout) return parcelable;
 
         final ExpandableSavedState ss = new ExpandableSavedState(parcelable);
         ss.setWeight(getCurrentWeight());
@@ -131,8 +124,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void toggle() {
-        if (!isWeightLayout) return;
-
         if (0 < getCurrentWeight()) {
             collapse();
         } else {
@@ -145,7 +136,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void expand() {
-        if (isWeightLayout || isAnimating) return;
+        if (isAnimating) return;
 
         createExpandAnimator(0, layoutWeight, duration, interpolator).start();
     }
@@ -155,7 +146,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void expand(final long duration, @Nullable final TimeInterpolator interpolator) {
-        if (isWeightLayout || isAnimating) return;
+        if (isAnimating) return;
 
         if (duration == 0) {
             setWeight(layoutWeight);
@@ -267,7 +258,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      * @param interpolator use the default interpolator if the argument is null.
      */
     public void move(float weight, long duration, @Nullable TimeInterpolator interpolator) {
-        if (!isWeightLayout || isAnimating) return;
+        if (isAnimating) return;
 
         if (duration == 0L) {
             Log.i("hoge", "quick");
@@ -298,8 +289,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(final ValueAnimator animation) {
-                if (!isWeightLayout) return;
-
                 setWeight((float) animation.getAnimatedValue());
                 requestLayout();
             }
@@ -310,7 +299,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                 isAnimating = true;
 
                 if (listener == null) return;
-
                 listener.onAnimationStart();
 
                 if (layoutWeight == to) {
@@ -330,8 +318,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
 
                 if (listener == null) return;
                 listener.onAnimationEnd();
-
-                if (!isWeightLayout) return;
 
                 if (currentWeight == layoutWeight) {
                     listener.onOpened();
