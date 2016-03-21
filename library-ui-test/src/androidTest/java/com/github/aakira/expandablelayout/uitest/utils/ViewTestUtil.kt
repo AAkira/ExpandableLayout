@@ -1,6 +1,7 @@
 package com.github.aakira.expandablelayout.uitest.utils
 
 import android.view.View
+import android.widget.LinearLayout
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
 
@@ -51,4 +52,14 @@ fun equalWidth(width: Int) = object : TypeSafeMatcher<View>() {
     }
 
     override fun matchesSafely(view: View) = view.width == width
+}
+
+fun equalWeight(weight: Float) = object : TypeSafeMatcher<View>() {
+    override fun describeTo(description: Description) {
+        description.appendText(String.format("The weight of this layout " +
+                "is not equal to weight(%f).", weight))
+    }
+
+    override fun matchesSafely(view: View) =
+            (view.layoutParams as LinearLayout.LayoutParams).weight == weight
 }
