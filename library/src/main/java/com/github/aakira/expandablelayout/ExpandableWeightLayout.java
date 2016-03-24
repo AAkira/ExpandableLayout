@@ -124,10 +124,18 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void toggle() {
+        toggle(duration, interpolator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void toggle(final long duration, @Nullable final TimeInterpolator interpolator) {
         if (0 < getCurrentWeight()) {
-            collapse();
+            collapse(duration, interpolator);
         } else {
-            expand();
+            expand(duration, interpolator);
         }
     }
 

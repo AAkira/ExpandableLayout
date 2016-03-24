@@ -41,6 +41,14 @@ public interface ExpandableLayout {
     void toggle();
 
     /**
+     * Starts animation the state of the view to the inverse of its current state.
+     *
+     * @param duration
+     * @param interpolator use the default interpolator if the argument is null.
+     */
+    void toggle(final long duration, @Nullable final TimeInterpolator interpolator);
+
+    /**
      * Starts expand animation.
      */
     void expand();

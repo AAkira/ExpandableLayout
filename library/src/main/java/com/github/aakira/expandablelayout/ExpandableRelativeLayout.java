@@ -178,10 +178,18 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     @Override
     public void toggle() {
+        toggle(duration, interpolator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void toggle(final long duration, final @Nullable TimeInterpolator interpolator) {
         if (closePosition < getCurrentPosition()) {
-            collapse();
+            collapse(duration, interpolator);
         } else {
-            expand();
+            expand(duration, interpolator);
         }
     }
 
