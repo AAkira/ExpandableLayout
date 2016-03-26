@@ -83,5 +83,12 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalWeight(0f)))
         Espresso.unregisterIdlingResources(idlingResource)
+
+        // set expanse (default expanse weight is 3)
+        instrumentation.runOnMainSync { expandableLayout.isExpanded = true }
+        idlingResource = ElapsedIdLingResource(1000)
+        Espresso.registerIdlingResources(idlingResource)
+        onView(withId(R.id.expandableLayout)).check(matches(equalWeight(3f)))
+        Espresso.unregisterIdlingResources(idlingResource)
     }
 }

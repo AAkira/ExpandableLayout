@@ -156,6 +156,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         if (isAnimating) return;
 
         if (duration == 0) {
+            isExpanded = true;
             setWeight(layoutWeight);
             requestLayout();
             return;
@@ -181,6 +182,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         if (isAnimating) return;
 
         if (duration == 0) {
+            isExpanded = false;
             setWeight(0);
             requestLayout();
             return;
@@ -218,8 +220,13 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void setExpanded(boolean expanded) {
-        isExpanded = expanded;
-        requestLayout();
+        if (isExpanded == expanded) return;
+
+        if (expanded) {
+            move(layoutWeight, 0, null);
+        } else {
+            move(0, 0, null);
+        }
     }
 
     /**
@@ -268,6 +275,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         if (isAnimating) return;
 
         if (duration == 0L) {
+            isExpanded = weight > 0;
             setWeight(weight);
             requestLayout();
             return;
