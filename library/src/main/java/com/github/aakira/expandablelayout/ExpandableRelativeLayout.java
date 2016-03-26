@@ -272,9 +272,13 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     @Override
     public void setExpanded(boolean expanded) {
-        isExpanded = expanded;
-        isArranged = false;
-        requestLayout();
+        if (isExpanded == expanded) return;
+
+        if (expanded) {
+            move(layoutSize, 0, null);
+        } else {
+            move(closePosition, 0, null);
+        }
     }
 
     /**
@@ -314,6 +318,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (isAnimating || 0 > position || layoutSize < position) return;
 
         if (duration == 0) {
+            isExpanded = position > closePosition;
             setLayoutSize(position);
             requestLayout();
             return;
@@ -345,6 +350,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         final int destination = getChildPosition(index) +
                 (isVertical() ? getPaddingBottom() : getPaddingRight());
         if (duration == 0) {
+            isExpanded = destination > closePosition;
             setLayoutSize(destination);
             requestLayout();
             return;
@@ -483,8 +489,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationEnd(Animator animator) {
                 isAnimating = false;
-                final int currentSize = isVertical()
-                        ? getLayoutParams().height : getLayoutParams().width;
+                final int currentSize = getCurrentPosition();
                 isExpanded = currentSize > closePosition;
 
                 if (listener == null) {
