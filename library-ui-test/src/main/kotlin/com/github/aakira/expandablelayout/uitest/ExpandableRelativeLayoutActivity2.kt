@@ -16,15 +16,15 @@ class ExpandableRelativeLayoutActivity2 : AppCompatActivity() {
         }
     }
 
-    private var expandLayout: ExpandableRelativeLayout by Delegates.notNull()
+    private var expandableLayout: ExpandableRelativeLayout by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_expandable_relative_layout_2)
         supportActionBar?.title = ExpandableRelativeLayoutActivity2::class.java.simpleName
 
-        expandLayout = findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
-        findViewById(R.id.expandButton)?.setOnClickListener { expandLayout.toggle() }
-        findViewById(R.id.moveChildButton)?.setOnClickListener { expandLayout.moveChild(1) }
+        expandableLayout = findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
+        findViewById(R.id.expandButton)?.setOnClickListener { expandableLayout.toggle() }
+        findViewById(R.id.moveChildButton)?.setOnClickListener { expandableLayout.moveChild(1) }
     }
 }
