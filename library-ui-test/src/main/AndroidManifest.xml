@@ -18,5 +18,6 @@
 
         <activity android:name=".ExpandableRelativeLayoutActivity"/>
         <activity android:name=".ExpandableRelativeLayoutActivity2"/>
+        <activity android:name=".ExpandableWeightLayoutActivity"/>
     </application>
 </manifest>

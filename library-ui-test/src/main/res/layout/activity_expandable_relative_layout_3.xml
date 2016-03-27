@@ -30,6 +30,7 @@
         app:ael_expanded="false"
         app:ael_interpolator="fastOutSlowIn"
         app:ael_orientation="vertical"
+        android:background="@color/material_indigo_200"
         >
 
         <LinearLayout
