@@ -308,7 +308,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * Moves to position.
-     * Sets 0 to {@param duration} if you want to move immediately.
+     * Sets 0 to duration if you want to move immediately.
      *
      * @param position
      * @param duration
@@ -338,7 +338,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * Moves to bottom(VERTICAL) or right(HORIZONTAL) of child view
-     * Sets 0 to {@param duration} if you want to move immediately.
+     * Sets 0 to duration if you want to move immediately.
      *
      * @param index        index child view index
      * @param duration
