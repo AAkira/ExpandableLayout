@@ -3,6 +3,7 @@ package com.github.aakira.expandablelayout;
 import android.animation.TimeInterpolator;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -40,14 +41,38 @@ public interface ExpandableLayout {
     void toggle();
 
     /**
+     * Starts animation the state of the view to the inverse of its current state.
+     *
+     * @param duration
+     * @param interpolator use the default interpolator if the argument is null.
+     */
+    void toggle(final long duration, @Nullable final TimeInterpolator interpolator);
+
+    /**
      * Starts expand animation.
      */
     void expand();
 
     /**
+     * Starts expand animation.
+     *
+     * @param duration
+     * @param interpolator use the default interpolator if the argument is null.
+     */
+    void expand(final long duration, @Nullable final TimeInterpolator interpolator);
+
+    /**
      * Starts collapse animation.
      */
     void collapse();
+
+    /**
+     * Starts collapse animation.
+     *
+     * @param duration
+     * @param interpolator use the default interpolator if the argument is null.
+     */
+    void collapse(final long duration, @Nullable final TimeInterpolator interpolator);
 
     /**
      * Initializes this layout.

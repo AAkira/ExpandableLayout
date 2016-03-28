@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
@@ -27,7 +28,6 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
     private boolean isAnimating = false;
-    private boolean isWeightLayout = false;
 
     public ExpandableWeightLayout(final Context context) {
         this(context, null);
@@ -67,51 +67,35 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
 
         // Check this layout using the attribute of weight
         if (!(getLayoutParams() instanceof LinearLayout.LayoutParams)) {
-            return;
+            throw new AssertionError("You must arrange in LinearLayout.");
         }
-        if (0 < ((LinearLayout.LayoutParams) getLayoutParams()).weight) {
-            isWeightLayout = 0 < ((LinearLayout.LayoutParams) getLayoutParams()).weight;
-        }
+        if (0 >= getCurrentWeight()) throw new AssertionError("You must set a weight than 0.");
+
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (!isWeightLayout) {
-            return;
-        }
 
         if (!isCalculatedSize) {
-            layoutWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
-            if (0 < layoutWeight) {
-                isCalculatedSize = true;
-            }
+            layoutWeight = getCurrentWeight();
+            isCalculatedSize = true;
         }
 
-        if (isArranged) {
-            return;
-        }
-        if (isExpanded) {
-            ((LinearLayout.LayoutParams) getLayoutParams()).weight = layoutWeight;
-        } else {
-            ((LinearLayout.LayoutParams) getLayoutParams()).weight = 0;
-        }
+        if (isArranged) return;
+        setWeight(isExpanded ? layoutWeight : 0);
         isArranged = true;
 
-        if (savedState == null) {
-            return;
-        }
-        ((LinearLayout.LayoutParams) getLayoutParams()).weight = savedState.getWeight();
+        if (savedState == null) return;
+        setWeight(savedState.getWeight());
     }
 
     @Override
     protected Parcelable onSaveInstanceState() {
         final Parcelable parcelable = super.onSaveInstanceState();
-        if (!isWeightLayout) {
-            return parcelable;
-        }
+
         final ExpandableSavedState ss = new ExpandableSavedState(parcelable);
-        ss.setWeight(((LinearLayout.LayoutParams) getLayoutParams()).weight);
+        ss.setWeight(getCurrentWeight());
         return ss;
     }
 
@@ -139,13 +123,18 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void toggle() {
-        if (!isWeightLayout) {
-            return;
-        }
-        if (0 < ((LinearLayout.LayoutParams) getLayoutParams()).weight) {
-            collapse();
+        toggle(duration, interpolator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void toggle(final long duration, @Nullable final TimeInterpolator interpolator) {
+        if (0 < getCurrentWeight()) {
+            collapse(duration, interpolator);
         } else {
-            expand();
+            expand(duration, interpolator);
         }
     }
 
@@ -154,10 +143,25 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void expand() {
-        if (isAnimating) {
+        if (isAnimating) return;
+
+        createExpandAnimator(0, layoutWeight, duration, interpolator).start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void expand(final long duration, @Nullable final TimeInterpolator interpolator) {
+        if (isAnimating) return;
+
+        if (duration == 0) {
+            isExpanded = true;
+            setWeight(layoutWeight);
+            requestLayout();
             return;
         }
-        createExpandAnimator(0, layoutWeight).start();
+        createExpandAnimator(getCurrentWeight(), layoutWeight, duration, interpolator).start();
     }
 
     /**
@@ -165,10 +169,25 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void collapse() {
-        if (isAnimating) {
+        if (isAnimating) return;
+
+        createExpandAnimator(getCurrentWeight(), 0, duration, interpolator).start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void collapse(final long duration, @Nullable final TimeInterpolator interpolator) {
+        if (isAnimating) return;
+
+        if (duration == 0) {
+            isExpanded = false;
+            setWeight(0);
+            requestLayout();
             return;
         }
-        createExpandAnimator(layoutWeight, 0).start();
+        createExpandAnimator(getCurrentWeight(), 0, duration, interpolator).start();
     }
 
     /**
@@ -201,8 +220,13 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void setExpanded(boolean expanded) {
-        isExpanded = expanded;
-        requestLayout();
+        if (isExpanded == expanded) return;
+
+        if (expanded) {
+            move(layoutWeight, 0, null);
+        } else {
+            move(0, 0, null);
+        }
     }
 
     /**
@@ -221,8 +245,42 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         this.interpolator = interpolator;
     }
 
-    private void updateLayout() {
-        super.requestLayout();
+    /**
+     * Gets current weight of expandable layout.
+     *
+     * @return weight
+     */
+    public float getCurrentWeight() {
+        return ((LinearLayout.LayoutParams) getLayoutParams()).weight;
+    }
+
+    /**
+     * @param weight
+     *
+     * @see #move(float, long, TimeInterpolator)
+     */
+    public void move(float weight) {
+        move(weight, duration, interpolator);
+    }
+
+    /**
+     * Change to weight.
+     * Sets 0 to {@param duration} if you want to move immediately.
+     *
+     * @param weight
+     * @param duration
+     * @param interpolator use the default interpolator if the argument is null.
+     */
+    public void move(float weight, long duration, @Nullable TimeInterpolator interpolator) {
+        if (isAnimating) return;
+
+        if (duration == 0L) {
+            isExpanded = weight > 0;
+            setWeight(weight);
+            requestLayout();
+            return;
+        }
+        createExpandAnimator(getCurrentWeight(), weight, duration, interpolator).start();
     }
 
     /**
@@ -232,21 +290,21 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      *
      * @param from
      * @param to
+     * @param duration
+     * @param interpolator TimeInterpolator
+     *
      * @return
      */
-    public ValueAnimator createExpandAnimator(final float from, final float to) {
+    public ValueAnimator createExpandAnimator(final float from, final float to, final long duration,
+                                              @Nullable final TimeInterpolator interpolator) {
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(from, to);
         valueAnimator.setDuration(duration);
-        valueAnimator.setInterpolator(interpolator);
+        valueAnimator.setInterpolator(interpolator == null ? this.interpolator : interpolator);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(final ValueAnimator animation) {
-                if (!isWeightLayout) {
-                    return;
-                }
-                ((LinearLayout.LayoutParams) getLayoutParams()).weight =
-                        (float) animation.getAnimatedValue();
-                updateLayout();
+                setWeight((float) animation.getAnimatedValue());
+                requestLayout();
             }
         });
         valueAnimator.addListener(new AnimatorListenerAdapter() {
@@ -254,9 +312,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
             public void onAnimationStart(Animator animation) {
                 isAnimating = true;
 
-                if (listener == null) {
-                    return;
-                }
+                if (listener == null) return;
                 listener.onAnimationStart();
 
                 if (layoutWeight == to) {
@@ -271,17 +327,11 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
             @Override
             public void onAnimationEnd(Animator animation) {
                 isAnimating = false;
-                final float currentWeight = ((LinearLayout.LayoutParams) getLayoutParams()).weight;
+                final float currentWeight = getCurrentWeight();
                 isExpanded = currentWeight > 0;
 
-                if (listener == null) {
-                    return;
-                }
+                if (listener == null) return;
                 listener.onAnimationEnd();
-
-                if (!isWeightLayout) {
-                    return;
-                }
 
                 if (currentWeight == layoutWeight) {
                     listener.onOpened();
@@ -293,5 +343,9 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
             }
         });
         return valueAnimator;
+    }
+
+    private void setWeight(final float weight) {
+        ((LinearLayout.LayoutParams) getLayoutParams()).weight = weight;
     }
 }

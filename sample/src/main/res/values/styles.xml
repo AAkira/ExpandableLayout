@@ -5,4 +5,16 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Text"/>
+
+    <style name="Text.ReadMore">
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text.ReadMore.Overlay">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+    </style>
 </resources>

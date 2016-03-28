@@ -10,6 +10,7 @@ import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -26,12 +27,16 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     private int orientation;
     /**
      * You cannot define {@link #isExpanded}, {@link #defaultChildIndex}
-     * and {@link #defaultChildPosition} at the same time.
-     * {@link #defaultChildPosition} has priority over {@link #isExpanded}
+     * and {@link #defaultPosition} at the same time.
+     * {@link #defaultPosition} has priority over {@link #isExpanded}
      * and {@link #defaultChildIndex} if you set them at the same time.
+     * <p/>
+     * <p/>
+     * Priority
+     * {@link #defaultPosition} > {@link #defaultChildIndex} > {@link #isExpanded}
      */
     private int defaultChildIndex;
-    private int defaultChildPosition;
+    private int defaultPosition;
     /**
      * The close position is width from left of layout if orientation is horizontal.
      * The close position is height from top of layout if orientation is vertical.
@@ -82,7 +87,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         orientation = a.getInteger(R.styleable.expandableLayout_ael_orientation, VERTICAL);
         defaultChildIndex = a.getInteger(R.styleable.expandableLayout_ael_defaultChildIndex,
                 Integer.MAX_VALUE);
-        defaultChildPosition = a.getInteger(R.styleable.expandableLayout_ael_defaultPosition,
+        defaultPosition = a.getDimensionPixelSize(R.styleable.expandableLayout_ael_defaultPosition,
                 Integer.MIN_VALUE);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_ael_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
@@ -94,55 +99,50 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        if (!isCalculatedSize) {
-            // calculate the size of layout which is children and self.
-            childSizeList.clear();
-            View view;
-            LayoutParams params;
-            for (int i = 0; i < getChildCount(); i++) {
-                view = getChildAt(i);
-                params = (LayoutParams) view.getLayoutParams();
+        if (isCalculatedSize) return;
+        // calculate a size of children
+        childSizeList.clear();
+        View view;
+        LayoutParams params;
+        for (int i = 0; i < getChildCount(); i++) {
+            view = getChildAt(i);
+            params = (LayoutParams) view.getLayoutParams();
 
-                childSizeList.add(isVertical()
-                        ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
-                        : view.getMeasuredWidth() + params.leftMargin + params.rightMargin);
-            }
-            layoutSize = getCurrentPosition();
-
-            if (0 < layoutSize) {
-                isCalculatedSize = true;
-            }
+            childSizeList.add(isVertical()
+                    ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
+                    : view.getMeasuredWidth() + params.leftMargin + params.rightMargin);
         }
-
-        if (isArranged) return;
-
-        if (isExpanded) {
-            setLayoutSize(layoutSize);
-        } else {
-            setLayoutSize(closePosition);
-        }
-        final int childNumbers = childSizeList.size();
-        if (childNumbers > defaultChildIndex && childNumbers > 0) {
-            moveChild(defaultChildIndex, 0, null);
-        }
-        if (defaultChildPosition > 0 && layoutSize >= defaultChildPosition && layoutSize > 0) {
-            move(defaultChildPosition, 0, null);
-        }
-        isArranged = true;
-
-        if (savedState == null) return;
-        setLayoutSize(savedState.getSize());
+        isCalculatedSize = true;
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
 
+        if (isArranged) return;
+        layoutSize = getCurrentPosition();
+
         childPositionList.clear();
-        // calculate the top position of layout which is children
+        // calculate a top position of children
         for (int i = 0; i < getChildCount(); i++) {
             childPositionList.add((int) (isVertical() ? getChildAt(i).getY() : getChildAt(i).getX()));
         }
+
+        // adjust default position if a user set a value.
+        if (!isExpanded) {
+            setLayoutSize(closePosition);
+        }
+        final int childNumbers = childSizeList.size();
+        if (childNumbers > defaultChildIndex && childNumbers > 0) {
+            moveChild(defaultChildIndex, 0, null);
+        }
+        if (defaultPosition > 0 && layoutSize >= defaultPosition && layoutSize > 0) {
+            move(defaultPosition, 0, null);
+        }
+        isArranged = true;
+
+        if (savedState == null) return;
+        setLayoutSize(savedState.getSize());
     }
 
     @Override
@@ -178,10 +178,18 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     @Override
     public void toggle() {
+        toggle(duration, interpolator);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void toggle(final long duration, final @Nullable TimeInterpolator interpolator) {
         if (closePosition < getCurrentPosition()) {
-            collapse();
+            collapse(duration, interpolator);
         } else {
-            expand();
+            expand(duration, interpolator);
         }
     }
 
@@ -199,9 +207,37 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * {@inheritDoc}
      */
     @Override
+    public void expand(final long duration, final @Nullable TimeInterpolator interpolator) {
+        if (isAnimating) return;
+
+        if (duration == 0) {
+            move(layoutSize, duration, interpolator);
+            return;
+        }
+        createExpandAnimator(getCurrentPosition(), layoutSize, duration, interpolator).start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void collapse() {
         if (isAnimating) return;
 
+        createExpandAnimator(getCurrentPosition(), closePosition, duration, interpolator).start();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void collapse(final long duration, final @Nullable TimeInterpolator interpolator) {
+        if (isAnimating) return;
+
+        if (duration == 0) {
+            move(closePosition, duration, interpolator);
+            return;
+        }
         createExpandAnimator(getCurrentPosition(), closePosition, duration, interpolator).start();
     }
 
@@ -236,9 +272,13 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     @Override
     public void setExpanded(boolean expanded) {
-        isExpanded = expanded;
-        isArranged = false;
-        requestLayout();
+        if (isExpanded == expanded) return;
+
+        if (expanded) {
+            move(layoutSize, 0, null);
+        } else {
+            move(closePosition, 0, null);
+        }
     }
 
     /**
@@ -259,6 +299,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * @param position
+     *
      * @see #move(int, long, TimeInterpolator)
      */
     public void move(int position) {
@@ -266,20 +307,29 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     }
 
     /**
-     * Moves to position
+     * Moves to position.
+     * Sets 0 to {@param duration} if you want to move immediately.
      *
      * @param position
      * @param duration
-     * @param interpolator
+     * @param interpolator use the default interpolator if the argument is null.
      */
-    public void move(int position, long duration, TimeInterpolator interpolator) {
+    public void move(int position, long duration, @Nullable TimeInterpolator interpolator) {
         if (isAnimating || 0 > position || layoutSize < position) return;
 
-        createExpandAnimator(getCurrentPosition(), position, duration, interpolator).start();
+        if (duration == 0) {
+            isExpanded = position > closePosition;
+            setLayoutSize(position);
+            requestLayout();
+            return;
+        }
+        createExpandAnimator(getCurrentPosition(), position, duration,
+                interpolator == null ? this.interpolator : interpolator).start();
     }
 
     /**
      * @param index child view index
+     *
      * @see #moveChild(int, long, TimeInterpolator)
      */
     public void moveChild(int index) {
@@ -288,17 +338,25 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * Moves to bottom(VERTICAL) or right(HORIZONTAL) of child view
+     * Sets 0 to {@param duration} if you want to move immediately.
      *
      * @param index        index child view index
      * @param duration
-     * @param interpolator
+     * @param interpolator use the default interpolator if the argument is null.
      */
-    public void moveChild(int index, long duration, TimeInterpolator interpolator) {
+    public void moveChild(int index, long duration, @Nullable TimeInterpolator interpolator) {
         if (isAnimating) return;
 
-        createExpandAnimator(getCurrentPosition(),
-                getChildPosition(index) + (isVertical() ? getPaddingBottom() : getPaddingRight()),
-                duration, interpolator).start();
+        final int destination = getChildPosition(index) +
+                (isVertical() ? getPaddingBottom() : getPaddingRight());
+        if (duration == 0) {
+            isExpanded = destination > closePosition;
+            setLayoutSize(destination);
+            requestLayout();
+            return;
+        }
+        createExpandAnimator(getCurrentPosition(), destination,
+                duration, interpolator == null ? this.interpolator : interpolator).start();
     }
 
     /**
@@ -315,6 +373,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @param index index of child view
+     *
      * @return position from top or left
      */
     public int getChildPosition(final int index) {
@@ -329,6 +388,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @return
+     *
      * @see #closePosition
      */
     public int getClosePosition() {
@@ -339,6 +399,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets the close position directly.
      *
      * @param position
+     *
      * @see #closePosition
      * @see #setClosePositionIndex(int)
      */
@@ -359,6 +420,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets close position using index of child view.
      *
      * @param childIndex
+     *
      * @see #closePosition
      * @see #setClosePosition(int)
      */
@@ -387,6 +449,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * @param to
      * @param duration
      * @param interpolator
+     *
      * @return
      */
     private ValueAnimator createExpandAnimator(
@@ -426,8 +489,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationEnd(Animator animator) {
                 isAnimating = false;
-                final int currentSize = isVertical()
-                        ? getLayoutParams().height : getLayoutParams().width;
+                final int currentSize = getCurrentPosition();
                 isExpanded = currentSize > closePosition;
 
                 if (listener == null) {
