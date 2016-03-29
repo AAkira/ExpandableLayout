@@ -265,7 +265,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
 
     /**
      * Change to weight.
-     * Sets 0 to {@param duration} if you want to move immediately.
+     * Sets 0 to duration if you want to move immediately.
      *
      * @param weight
      * @param duration
