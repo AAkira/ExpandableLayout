@@ -269,11 +269,9 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
     public void setExpanded(boolean expanded) {
         if (isExpanded == expanded) return;
 
-        if (expanded) {
-            move(layoutSize, 0, null);
-        } else {
-            move(closePosition, 0, null);
-        }
+        isExpanded = expanded;
+        setLayoutSize(expanded ? layoutSize : closePosition);
+        requestLayout();
     }
 
     /**

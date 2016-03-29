@@ -222,11 +222,9 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     public void setExpanded(boolean expanded) {
         if (isExpanded == expanded) return;
 
-        if (expanded) {
-            move(layoutWeight, 0, null);
-        } else {
-            move(0, 0, null);
-        }
+        isExpanded = expanded;
+        setWeight(expanded ? layoutWeight : 0);
+        requestLayout();
     }
 
     /**
