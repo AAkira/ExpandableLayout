@@ -210,7 +210,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void expand(final long duration, final @Nullable TimeInterpolator interpolator) {
         if (isAnimating) return;
 
-        if (duration == 0) {
+        if (duration <= 0) {
             move(layoutSize, duration, interpolator);
             return;
         }
@@ -234,7 +234,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void collapse(final long duration, final @Nullable TimeInterpolator interpolator) {
         if (isAnimating) return;
 
-        if (duration == 0) {
+        if (duration <= 0) {
             move(closePosition, duration, interpolator);
             return;
         }
@@ -274,11 +274,9 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void setExpanded(boolean expanded) {
         if (isExpanded == expanded) return;
 
-        if (expanded) {
-            move(layoutSize, 0, null);
-        } else {
-            move(closePosition, 0, null);
-        }
+        isExpanded = expanded;
+        setLayoutSize(expanded ? layoutSize : closePosition);
+        requestLayout();
     }
 
     /**
@@ -317,10 +315,11 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
     public void move(int position, long duration, @Nullable TimeInterpolator interpolator) {
         if (isAnimating || 0 > position || layoutSize < position) return;
 
-        if (duration == 0) {
+        if (duration <= 0) {
             isExpanded = position > closePosition;
             setLayoutSize(position);
             requestLayout();
+            notifyListeners();
             return;
         }
         createExpandAnimator(getCurrentPosition(), position, duration,
@@ -349,10 +348,11 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
         final int destination = getChildPosition(index) +
                 (isVertical() ? getPaddingBottom() : getPaddingRight());
-        if (duration == 0) {
+        if (duration <= 0) {
             isExpanded = destination > closePosition;
             setLayoutSize(destination);
             requestLayout();
+            notifyListeners();
             return;
         }
         createExpandAnimator(getCurrentPosition(), destination,
@@ -472,11 +472,9 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
             @Override
             public void onAnimationStart(Animator animator) {
                 isAnimating = true;
-                if (listener == null) {
-                    return;
-                }
-                listener.onAnimationStart();
+                if (listener == null) return;
 
+                listener.onAnimationStart();
                 if (layoutSize == to) {
                     listener.onPreOpen();
                     return;
@@ -492,11 +490,9 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
                 final int currentSize = getCurrentPosition();
                 isExpanded = currentSize > closePosition;
 
-                if (listener == null) {
-                    return;
-                }
-                listener.onAnimationEnd();
+                if (listener == null) return;
 
+                listener.onAnimationEnd();
                 if (currentSize == layoutSize) {
                     listener.onOpened();
                     return;
@@ -508,4 +504,22 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         });
         return valueAnimator;
     }
+
+    /**
+     * Notify listeners
+     */
+    private void notifyListeners() {
+        if (listener == null) return;
+
+        listener.onAnimationStart();
+        listener.onAnimationEnd();
+        if (isExpanded) {
+            listener.onPreOpen();
+            listener.onOpened();
+        } else {
+            listener.onPreClose();
+            listener.onClosed();
+        }
+    }
+
 }

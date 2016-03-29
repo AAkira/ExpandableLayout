@@ -155,10 +155,11 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     public void expand(final long duration, @Nullable final TimeInterpolator interpolator) {
         if (isAnimating) return;
 
-        if (duration == 0) {
+        if (duration <= 0) {
             isExpanded = true;
             setWeight(layoutWeight);
             requestLayout();
+            notifyListeners();
             return;
         }
         createExpandAnimator(getCurrentWeight(), layoutWeight, duration, interpolator).start();
@@ -181,10 +182,11 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     public void collapse(final long duration, @Nullable final TimeInterpolator interpolator) {
         if (isAnimating) return;
 
-        if (duration == 0) {
+        if (duration <= 0) {
             isExpanded = false;
             setWeight(0);
             requestLayout();
+            notifyListeners();
             return;
         }
         createExpandAnimator(getCurrentWeight(), 0, duration, interpolator).start();
@@ -222,11 +224,9 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     public void setExpanded(boolean expanded) {
         if (isExpanded == expanded) return;
 
-        if (expanded) {
-            move(layoutWeight, 0, null);
-        } else {
-            move(0, 0, null);
-        }
+        isExpanded = expanded;
+        setWeight(expanded ? layoutWeight : 0);
+        requestLayout();
     }
 
     /**
@@ -274,10 +274,11 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     public void move(float weight, long duration, @Nullable TimeInterpolator interpolator) {
         if (isAnimating) return;
 
-        if (duration == 0L) {
+        if (duration <= 0L) {
             isExpanded = weight > 0;
             setWeight(weight);
             requestLayout();
+            notifyListeners();
             return;
         }
         createExpandAnimator(getCurrentWeight(), weight, duration, interpolator).start();
@@ -295,8 +296,8 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      *
      * @return
      */
-    public ValueAnimator createExpandAnimator(final float from, final float to, final long duration,
-                                              @Nullable final TimeInterpolator interpolator) {
+    private ValueAnimator createExpandAnimator(final float from, final float to, final long duration,
+                                               @Nullable final TimeInterpolator interpolator) {
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(from, to);
         valueAnimator.setDuration(duration);
         valueAnimator.setInterpolator(interpolator == null ? this.interpolator : interpolator);
@@ -313,8 +314,8 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                 isAnimating = true;
 
                 if (listener == null) return;
-                listener.onAnimationStart();
 
+                listener.onAnimationStart();
                 if (layoutWeight == to) {
                     listener.onPreOpen();
                     return;
@@ -331,8 +332,8 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
                 isExpanded = currentWeight > 0;
 
                 if (listener == null) return;
-                listener.onAnimationEnd();
 
+                listener.onAnimationEnd();
                 if (currentWeight == layoutWeight) {
                     listener.onOpened();
                     return;
@@ -347,5 +348,22 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
 
     private void setWeight(final float weight) {
         ((LinearLayout.LayoutParams) getLayoutParams()).weight = weight;
+    }
+
+    /**
+     * Notify listeners
+     */
+    private void notifyListeners() {
+        if (listener == null) return;
+
+        listener.onAnimationStart();
+        listener.onAnimationEnd();
+        if (isExpanded) {
+            listener.onPreOpen();
+            listener.onOpened();
+        } else {
+            listener.onPreClose();
+            listener.onClosed();
+        }
     }
 }
