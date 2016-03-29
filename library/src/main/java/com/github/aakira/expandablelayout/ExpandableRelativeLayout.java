@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 
@@ -57,6 +58,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * view position top or left of children
      **/
     private List<Integer> childPositionList = new ArrayList<>();
+    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
 
     public ExpandableRelativeLayout(final Context context) {
         this(context, null);
@@ -512,14 +514,28 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         if (listener == null) return;
 
         listener.onAnimationStart();
-        listener.onAnimationEnd();
         if (isExpanded) {
             listener.onPreOpen();
-            listener.onOpened();
         } else {
             listener.onPreClose();
-            listener.onClosed();
         }
-    }
+        mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    getViewTreeObserver().removeGlobalOnLayoutListener(mGlobalLayoutListener);
+                } else {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(mGlobalLayoutListener);
+                }
 
+                listener.onAnimationEnd();
+                if (isExpanded) {
+                    listener.onOpened();
+                } else {
+                    listener.onClosed();
+                }
+            }
+        };
+        getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
+    }
 }

@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
@@ -52,6 +53,7 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      * view size of children
      **/
     private List<Integer> childSizeList = new ArrayList<>();
+    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
 
     public ExpandableLinearLayout(final Context context) {
         this(context, null);
@@ -498,13 +500,28 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
         if (listener == null) return;
 
         listener.onAnimationStart();
-        listener.onAnimationEnd();
         if (isExpanded) {
             listener.onPreOpen();
-            listener.onOpened();
         } else {
             listener.onPreClose();
-            listener.onClosed();
         }
+        mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    getViewTreeObserver().removeGlobalOnLayoutListener(mGlobalLayoutListener);
+                } else {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(mGlobalLayoutListener);
+                }
+
+                listener.onAnimationEnd();
+                if (isExpanded) {
+                    listener.onOpened();
+                } else {
+                    listener.onClosed();
+                }
+            }
+        };
+        getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
 }
