@@ -268,8 +268,10 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      * {@inheritDoc}
      */
     @Override
-    public void setExpanded(boolean expanded) {
-        if (isExpanded == expanded) return;
+    public void setExpanded(final boolean expanded) {
+        final int currentPosition = getCurrentPosition();
+        if ((expanded && (currentPosition == layoutSize))
+                || (!expanded && currentPosition == closePosition)) return;
 
         isExpanded = expanded;
         setLayoutSize(expanded ? layoutSize : closePosition);

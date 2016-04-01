@@ -274,7 +274,9 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     @Override
     public void setExpanded(boolean expanded) {
-        if (isExpanded == expanded) return;
+        final int currentPosition = getCurrentPosition();
+        if ((expanded && (currentPosition == layoutSize))
+                || (!expanded && currentPosition == closePosition)) return;
 
         isExpanded = expanded;
         setLayoutSize(expanded ? layoutSize : closePosition);

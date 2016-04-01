@@ -224,7 +224,9 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void setExpanded(boolean expanded) {
-        if (isExpanded == expanded) return;
+        final float currentWeight = getCurrentWeight();
+        if ((expanded && (currentWeight == layoutWeight))
+                || (!expanded && currentWeight == 0)) return;
 
         isExpanded = expanded;
         setWeight(expanded ? layoutWeight : 0);
