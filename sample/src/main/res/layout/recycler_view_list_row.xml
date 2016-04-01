@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <RelativeLayout
         android:id="@+id/button"
@@ -10,12 +12,14 @@
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:gravity="center">
+        android:gravity="center"
+        >
 
         <View
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:background="@drawable/triangle" />
+            android:background="@drawable/triangle"
+            />
     </RelativeLayout>
 
     <TextView
@@ -27,16 +31,18 @@
         android:gravity="center"
         android:padding="8dp"
         android:textColor="@color/white"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        />
 
-    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+    <com.github.aakira.expandablelayout.ExpandableLinearLayout
         android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_below="@id/textView"
-        app:ael_expanded="false"
+        android:orientation="vertical"
         app:ael_duration="400"
-        app:ael_orientation="vertical">
+        app:ael_expanded="false"
+        >
 
         <TextView
             android:layout_width="match_parent"
@@ -48,6 +54,7 @@
     sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
     "
             android:textColor="@color/white"
-            android:textSize="16sp" />
-    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+            android:textSize="16sp"
+            />
+    </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 </RelativeLayout>
