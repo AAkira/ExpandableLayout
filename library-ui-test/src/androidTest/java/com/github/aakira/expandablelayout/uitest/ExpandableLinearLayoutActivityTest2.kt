@@ -8,6 +8,7 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.runner.AndroidJUnit4
 import android.test.ActivityInstrumentationTestCase2
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.github.aakira.expandablelayout.ExpandableLinearLayout
 import com.github.aakira.expandablelayout.uitest.utils.ElapsedIdLingResource
@@ -53,6 +54,9 @@ class ExpandableLinearLayoutActivityTest2 : ActivityInstrumentationTestCase2<Exp
 
         val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableLinearLayout
         val child1 = activity.findViewById(R.id.child1) as TextView
+        val child2 = activity.findViewById(R.id.child2) as RelativeLayout
+        val child3 = activity.findViewById(R.id.child3) as TextView
+        val child4 = activity.findViewById(R.id.child4) as TextView
         val marginSmall = getActivity().resources.getDimensionPixelSize(R.dimen.margin_small)
 
         // default close
@@ -84,8 +88,8 @@ class ExpandableLinearLayoutActivityTest2 : ActivityInstrumentationTestCase2<Exp
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.child2)).check(matches(orMoreHeight(1)))
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
-                activity.findViewById(R.id.child2),
+                child1,
+                child2,
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
@@ -107,10 +111,10 @@ class ExpandableLinearLayoutActivityTest2 : ActivityInstrumentationTestCase2<Exp
         Espresso.registerIdlingResources(idlingResource)
         // move to first position
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
-                activity.findViewById(R.id.child2),
-                activity.findViewById(R.id.child3),
-                activity.findViewById(R.id.child4),
+                child1,
+                child2,
+                child3,
+                child4,
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)

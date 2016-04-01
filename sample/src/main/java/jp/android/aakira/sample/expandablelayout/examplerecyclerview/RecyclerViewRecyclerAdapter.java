@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
 
 import java.util.List;
@@ -83,13 +83,13 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public RelativeLayout buttonLayout;
-        public ExpandableRelativeLayout expandableLayout;
+        public ExpandableLinearLayout expandableLayout;
 
         public ViewHolder(View v) {
             super(v);
             textView = (TextView) v.findViewById(R.id.textView);
             buttonLayout = (RelativeLayout) v.findViewById(R.id.button);
-            expandableLayout = (ExpandableRelativeLayout) v.findViewById(R.id.expandableLayout);
+            expandableLayout = (ExpandableLinearLayout) v.findViewById(R.id.expandableLayout);
         }
     }
 

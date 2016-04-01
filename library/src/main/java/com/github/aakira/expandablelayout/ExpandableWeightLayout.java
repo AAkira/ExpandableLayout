@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.ViewTreeObserver;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +29,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
     private boolean isAnimating = false;
+    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener;
 
     public ExpandableWeightLayout(final Context context) {
         this(context, null);
@@ -222,7 +224,9 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void setExpanded(boolean expanded) {
-        if (isExpanded == expanded) return;
+        final float currentWeight = getCurrentWeight();
+        if ((expanded && (currentWeight == layoutWeight))
+                || (!expanded && currentWeight == 0)) return;
 
         isExpanded = expanded;
         setWeight(expanded ? layoutWeight : 0);
@@ -357,13 +361,28 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         if (listener == null) return;
 
         listener.onAnimationStart();
-        listener.onAnimationEnd();
         if (isExpanded) {
             listener.onPreOpen();
-            listener.onOpened();
         } else {
             listener.onPreClose();
-            listener.onClosed();
         }
+        mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    getViewTreeObserver().removeGlobalOnLayoutListener(mGlobalLayoutListener);
+                } else {
+                    getViewTreeObserver().removeOnGlobalLayoutListener(mGlobalLayoutListener);
+                }
+
+                listener.onAnimationEnd();
+                if (isExpanded) {
+                    listener.onOpened();
+                } else {
+                    listener.onClosed();
+                }
+            }
+        };
+        getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
 }

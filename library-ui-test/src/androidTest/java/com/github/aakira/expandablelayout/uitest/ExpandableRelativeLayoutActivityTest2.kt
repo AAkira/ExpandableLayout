@@ -8,6 +8,7 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.runner.AndroidJUnit4
 import android.test.ActivityInstrumentationTestCase2
+import android.widget.TextView
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout
 import com.github.aakira.expandablelayout.uitest.utils.ElapsedIdLingResource
 import com.github.aakira.expandablelayout.uitest.utils.equalHeight
@@ -52,6 +53,9 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
         assertThat(instrumentation, notNullValue())
 
         val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
+        val child1 = activity.findViewById(R.id.child1) as TextView
+        val child2 = activity.findViewById(R.id.child2) as TextView
+        val child3 = activity.findViewById(R.id.child3) as TextView
         val expandableLayoutPadding = resources.getDimensionPixelSize(R.dimen.margin_large)
 
         // default close
@@ -67,8 +71,8 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
         var idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
-                activity.findViewById(R.id.child3),
+                child1,
+                child3,
                 margin = expandableLayoutPadding
         )))
         Espresso.unregisterIdlingResources(idlingResource)
@@ -78,7 +82,7 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
+                child1,
                 margin = expandableLayoutPadding
         )))
         Espresso.unregisterIdlingResources(idlingResource)
@@ -88,7 +92,7 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child2),
+                child2,
                 margin = expandableLayoutPadding
         )))
         Espresso.unregisterIdlingResources(idlingResource)

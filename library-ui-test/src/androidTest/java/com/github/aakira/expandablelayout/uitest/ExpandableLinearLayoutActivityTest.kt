@@ -53,6 +53,8 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
 
         val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableLinearLayout
         val child1 = activity.findViewById(R.id.child1) as TextView
+        val child2 = activity.findViewById(R.id.child2) as TextView
+        val child3 = activity.findViewById(R.id.child3) as TextView
         val marginSmall = getActivity().resources.getDimensionPixelSize(R.dimen.margin_small)
 
         // default close
@@ -85,8 +87,8 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         // second.height != 0 && first.height + second.height == expandableLayout.height
         onView(withId(R.id.child2)).check(matches(orMoreHeight(1)))
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
-                activity.findViewById(R.id.child2),
+                child1,
+                child2,
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
@@ -108,9 +110,9 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         // move to first position
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
-                activity.findViewById(R.id.child2),
-                activity.findViewById(R.id.child3),
+                child1,
+                child2,
+                child3,
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
