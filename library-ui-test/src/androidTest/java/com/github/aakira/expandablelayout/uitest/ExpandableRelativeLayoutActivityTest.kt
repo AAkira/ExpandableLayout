@@ -8,6 +8,7 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.runner.AndroidJUnit4
 import android.test.ActivityInstrumentationTestCase2
+import android.widget.TextView
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout
 import com.github.aakira.expandablelayout.uitest.utils.ElapsedIdLingResource
 import com.github.aakira.expandablelayout.uitest.utils.equalHeight
@@ -51,6 +52,9 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         assertThat(instrumentation, notNullValue())
 
         val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
+        val child1 = activity.findViewById(R.id.child1) as TextView
+        val child2 = activity.findViewById(R.id.child2) as TextView
+        val child3 = activity.findViewById(R.id.child3) as TextView
 
         // default close
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
@@ -78,8 +82,8 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.child2)).check(matches(orMoreHeight(1)))
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
-                activity.findViewById(R.id.child2)
+                child1,
+                child2
         )))
         Espresso.unregisterIdlingResources(idlingResource)
 
@@ -97,9 +101,9 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         Espresso.registerIdlingResources(idlingResource)
         // move to first position
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                activity.findViewById(R.id.child1),
-                activity.findViewById(R.id.child2),
-                activity.findViewById(R.id.child3)
+                child1,
+                child2,
+                child3
         )))
         Espresso.unregisterIdlingResources(idlingResource)
     }
