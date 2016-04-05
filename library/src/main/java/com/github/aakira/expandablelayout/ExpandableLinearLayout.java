@@ -245,11 +245,11 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
     public void initLayout(final boolean isMaintain) {
         closePosition = 0;
         layoutSize = 0;
-        isArranged = isMaintain;
+        isArranged = false;
         isCalculatedSize = false;
         savedState = null;
 
-        super.requestLayout();
+        requestLayout();
     }
 
     /**
