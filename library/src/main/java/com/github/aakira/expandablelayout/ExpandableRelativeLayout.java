@@ -23,18 +23,24 @@ import java.util.List;
 public class ExpandableRelativeLayout extends RelativeLayout implements ExpandableLayout {
 
     private int duration;
-    private boolean isExpanded;
     private TimeInterpolator interpolator = new LinearInterpolator();
     private int orientation;
     /**
-     * You cannot define {@link #isExpanded}, {@link #defaultChildIndex}
+     * Default state of expanse
+     *
+     * @see #defaultChildIndex
+     * @see #defaultPosition
+     */
+    private boolean defaultExpanded;
+    /**
+     * You cannot define {@link #defaultExpanded}, {@link #defaultChildIndex}
      * and {@link #defaultPosition} at the same time.
-     * {@link #defaultPosition} has priority over {@link #isExpanded}
+     * {@link #defaultPosition} has priority over {@link #defaultExpanded}
      * and {@link #defaultChildIndex} if you set them at the same time.
      * <p/>
      * <p/>
      * Priority
-     * {@link #defaultPosition} > {@link #defaultChildIndex} > {@link #isExpanded}
+     * {@link #defaultPosition} > {@link #defaultChildIndex} > {@link #defaultExpanded}
      */
     private int defaultChildIndex;
     private int defaultPosition;
@@ -46,6 +52,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     private ExpandableLayoutListener listener;
     private ExpandableSavedState savedState;
+    private boolean isExpanded;
     private int layoutSize = 0;
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
@@ -85,7 +92,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.expandableLayout, defStyleAttr, 0);
         duration = a.getInteger(R.styleable.expandableLayout_ael_duration, DEFAULT_DURATION);
-        isExpanded = a.getBoolean(R.styleable.expandableLayout_ael_expanded, DEFAULT_EXPANDED);
+        defaultExpanded = a.getBoolean(R.styleable.expandableLayout_ael_expanded, DEFAULT_EXPANDED);
         orientation = a.getInteger(R.styleable.expandableLayout_ael_orientation, VERTICAL);
         defaultChildIndex = a.getInteger(R.styleable.expandableLayout_ael_defaultChildIndex,
                 Integer.MAX_VALUE);
@@ -131,7 +138,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         }
 
         // adjust default position if a user set a value.
-        if (!isExpanded) {
+        if (!defaultExpanded) {
             setLayoutSize(closePosition);
         }
         final int childNumbers = childSizeList.size();
@@ -248,13 +255,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      */
     @Override
     public void initLayout(final boolean isMaintain) {
-        closePosition = 0;
-        layoutSize = 0;
-        isArranged = isMaintain;
-        isCalculatedSize = false;
-        savedState = null;
-
-        super.requestLayout();
+        // Not support in ExpandableRelativeLayout
     }
 
     /**

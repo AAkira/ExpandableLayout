@@ -77,8 +77,12 @@ public interface ExpandableLayout {
     /**
      * Initializes this layout.
      *
-     * @param isMaintain The state of expanse is maintained if you set true.
+     * This method doesn't work in the {@link ExpandableRelativeLayout}.
+     * You should use the {@link ExpandableLinearLayout} if size of children change.
+     *
+     * @param isMaintain #Notice Not support this argument.
      */
+    @Deprecated
     void initLayout(final boolean isMaintain);
 
     /**

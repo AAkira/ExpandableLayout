@@ -20,11 +20,12 @@ import android.widget.RelativeLayout;
 public class ExpandableWeightLayout extends RelativeLayout implements ExpandableLayout {
 
     private int duration;
-    private boolean isExpanded;
     private TimeInterpolator interpolator = new LinearInterpolator();
+    private boolean defaultExpanded;
 
     private ExpandableLayoutListener listener;
     private ExpandableSavedState savedState;
+    private boolean isExpanded;
     private float layoutWeight = 0.0f;
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
@@ -56,7 +57,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.expandableLayout, defStyleAttr, 0);
         duration = a.getInteger(R.styleable.expandableLayout_ael_duration, DEFAULT_DURATION);
-        isExpanded = a.getBoolean(R.styleable.expandableLayout_ael_expanded, DEFAULT_EXPANDED);
+        defaultExpanded = a.getBoolean(R.styleable.expandableLayout_ael_expanded, DEFAULT_EXPANDED);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_ael_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
         interpolator = Utils.createInterpolator(interpolatorType);
@@ -85,7 +86,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         }
 
         if (isArranged) return;
-        setWeight(isExpanded ? layoutWeight : 0);
+        setWeight(defaultExpanded ? layoutWeight : 0);
         isArranged = true;
 
         if (savedState == null) return;
