@@ -28,7 +28,7 @@ You can include optional contents and use everywhere.
 #### Usage
 
 The expandableRelativeLayout doesn't work if child views change a size. 
-You should use the [ExpandableLinearLayout](#ExpandableLinearLayout) if there is a possibility.
+You should use the ExpandableLinearLayout if there is a possibility.
 
 #### Code
 
@@ -93,14 +93,16 @@ ExpandableLinearLayout expandableLayout
  = (ExpandableLinearLayout) findViewById(R.id.expandableLayout);
 
 child.setText("Sets text from a server");
-expandableLayout.initLayout(true);``// Recalculate size of children
+expandableLayout.initLayout(true); // Recalculate size of children
 ```
 
-The `initLayout()` is deprecated in v1.5.0.
-The argument of `isMaintain` flag doesn't work.
+The `initLayout()` is deprecated in v1.5.0.  
+The argument of `isMaintain` flag doesn't work.  
 I'll fix it in [v1.5.1](https://github.com/AAkira/ExpandableLayout/issues/66)
 
 ### ExpandableWeightLayout
+
+#### Usage
 
 You should use this layout if you want to use weight attributes at expandable layout.
 
