@@ -83,6 +83,10 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public RelativeLayout buttonLayout;
+        /**
+         * You must use the ExpandableLinearLayout in the recycler view.
+         * The ExpandableRelativeLayout doesn't work.
+         */
         public ExpandableLinearLayout expandableLayout;
 
         public ViewHolder(View v) {
