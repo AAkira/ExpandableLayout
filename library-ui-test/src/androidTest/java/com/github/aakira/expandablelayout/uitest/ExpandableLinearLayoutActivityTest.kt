@@ -9,7 +9,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.runner.AndroidJUnit4
 import android.test.ActivityInstrumentationTestCase2
 import android.widget.TextView
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout
+import com.github.aakira.expandablelayout.ExpandableLinearLayout
 import com.github.aakira.expandablelayout.uitest.utils.ElapsedIdLingResource
 import com.github.aakira.expandablelayout.uitest.utils.equalHeight
 import com.github.aakira.expandablelayout.uitest.utils.orMoreHeight
@@ -22,8 +22,8 @@ import org.junit.runner.RunWith
 import org.hamcrest.CoreMatchers.`is` as _is
 
 @RunWith(AndroidJUnit4::class)
-class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<ExpandableRelativeLayoutActivity>
-(ExpandableRelativeLayoutActivity::class.java) {
+class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<ExpandableLinearLayoutActivity>
+(ExpandableLinearLayoutActivity::class.java) {
 
     companion object {
         val DURATION = 500L
@@ -51,10 +51,11 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         assertThat<Activity>(activity, notNullValue())
         assertThat(instrumentation, notNullValue())
 
-        val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
+        val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableLinearLayout
         val child1 = activity.findViewById(R.id.child1) as TextView
         val child2 = activity.findViewById(R.id.child2) as TextView
         val child3 = activity.findViewById(R.id.child3) as TextView
+        val marginSmall = getActivity().resources.getDimensionPixelSize(R.dimen.margin_small)
 
         // default close
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
@@ -70,7 +71,10 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         instrumentation.runOnMainSync { expandableLayout.moveChild(0) }
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
-        onView(withId(R.id.child1)).check(matches(equalHeight(expandableLayout)))
+        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
+                child1,
+                margin = marginSmall
+        )))
         Espresso.unregisterIdlingResources(idlingResource)
 
         // set close height
@@ -80,10 +84,12 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         instrumentation.runOnMainSync { expandableLayout.moveChild(1) }
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
+        // second.height != 0 && first.height + second.height == expandableLayout.height
         onView(withId(R.id.child2)).check(matches(orMoreHeight(1)))
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
                 child1,
-                child2
+                child2,
+                margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
 
@@ -92,7 +98,10 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
         // move to first position
-        onView(withId(R.id.child1)).check(matches(equalHeight(expandableLayout)))
+        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
+                child1,
+                margin = marginSmall
+        )))
         Espresso.unregisterIdlingResources(idlingResource)
 
         // check toggle open (full)
@@ -103,7 +112,8 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
                 child1,
                 child2,
-                child3
+                child3,
+                margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
     }

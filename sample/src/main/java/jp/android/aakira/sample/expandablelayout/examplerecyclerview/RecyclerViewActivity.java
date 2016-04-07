@@ -25,11 +25,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
-
         getSupportActionBar().setTitle(RecyclerViewActivity.class.getSimpleName());
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

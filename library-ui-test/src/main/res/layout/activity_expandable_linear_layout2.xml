@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/material_teal_300"
+    >
+
+    <LinearLayout
+        android:id="@+id/column1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_light"
+        android:orientation="horizontal"
+        android:padding="1dp"
+        >
+
+        <Button
+            android:id="@+id/expandButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:text="Toggle"
+            />
+
+        <Button
+            android:id="@+id/moveChildButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:text="Move child1"
+            />
+
+        <Button
+            android:id="@+id/moveChildButton2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Move child2"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/column2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/column1"
+        android:background="@color/gray_light"
+        android:orientation="horizontal"
+        android:paddingBottom="1dp"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        >
+
+        <Button
+            android:id="@+id/moveTopButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:text="Top"
+            />
+
+        <Button
+            android:id="@+id/setCloseHeightButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Set close height"
+            />
+    </LinearLayout>
+
+    <com.github.aakira.expandablelayout.ExpandableLinearLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/column2"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:background="@color/material_orange_300"
+        android:orientation="vertical"
+        app:ael_duration="500"
+        app:ael_expanded="false"
+        app:ael_interpolator="decelerate"
+        >
+
+        <TextView
+            android:id="@+id/child1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="@color/material_cyan_500"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample."
+            android:textColor="@color/white"
+            />
+
+        <RelativeLayout
+            android:id="@+id/child2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="20dp"
+                android:layout_height="70dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/material_lime_400"
+                />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/view1"
+                android:background="@color/material_yellow_300"
+                android:gravity="center"
+                android:padding="@dimen/margin_small"
+                android:text="inner text"
+                android:textColor="@color/gray"
+                />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_below="@id/view1"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:background="@color/material_purple_400"
+                />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_below="@id/view2"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:background="@color/material_brown_400"
+                />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/child3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_blue_500"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample."
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/child4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_indigo_500"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample."
+            android:textColor="@color/white"
+            />
+    </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/expandableLayout"
+        android:background="@color/material_red_500"
+        />
+</RelativeLayout>

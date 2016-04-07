@@ -8,11 +8,11 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.runner.AndroidJUnit4
 import android.test.ActivityInstrumentationTestCase2
-import android.widget.TextView
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout
+import com.github.aakira.expandablelayout.ExpandableWeightLayout
 import com.github.aakira.expandablelayout.uitest.utils.ElapsedIdLingResource
 import com.github.aakira.expandablelayout.uitest.utils.equalHeight
-import com.github.aakira.expandablelayout.uitest.utils.orMoreHeight
+import com.github.aakira.expandablelayout.uitest.utils.equalWeight
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsNull.notNullValue
 import org.junit.After
@@ -22,11 +22,11 @@ import org.junit.runner.RunWith
 import org.hamcrest.CoreMatchers.`is` as _is
 
 @RunWith(AndroidJUnit4::class)
-class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<ExpandableRelativeLayoutActivity>
-(ExpandableRelativeLayoutActivity::class.java) {
+class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<ExpandableWeightLayoutActivity>
+(ExpandableWeightLayoutActivity::class.java) {
 
     companion object {
-        val DURATION = 500L
+        val DURATION = 350L
     }
 
     @Before
@@ -43,7 +43,7 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
     }
 
     @Test
-    fun testExpandableRelativeLayout() {
+    fun testExpandableRelativeLayout3() {
         val activity = activity
         val instrumentation = instrumentation
 
@@ -51,10 +51,7 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         assertThat<Activity>(activity, notNullValue())
         assertThat(instrumentation, notNullValue())
 
-        val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableRelativeLayout
-        val child1 = activity.findViewById(R.id.child1) as TextView
-        val child2 = activity.findViewById(R.id.child2) as TextView
-        val child3 = activity.findViewById(R.id.child3) as TextView
+        val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableWeightLayout
 
         // default close
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
@@ -63,48 +60,35 @@ class ExpandableRelativeLayoutActivityTest : ActivityInstrumentationTestCase2<Ex
         instrumentation.runOnMainSync { expandableLayout.toggle() }
         var idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
-        onView(withId(R.id.expandableLayout)).check(matches(orMoreHeight(1)))
+        onView(withId(R.id.expandableLayout)).check(matches(equalWeight(3f)))
         Espresso.unregisterIdlingResources(idlingResource)
 
-        // move to first layout
-        instrumentation.runOnMainSync { expandableLayout.moveChild(0) }
+        // change weight
+        instrumentation.runOnMainSync { expandableLayout.move(6f) }
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
-        onView(withId(R.id.child1)).check(matches(equalHeight(expandableLayout)))
+        onView(withId(R.id.expandableLayout)).check(matches(equalWeight(6f)))
         Espresso.unregisterIdlingResources(idlingResource)
 
-        // set close height
-        instrumentation.runOnMainSync { expandableLayout.closePosition = expandableLayout.currentPosition; }
-
-        // move to second layout
-        instrumentation.runOnMainSync { expandableLayout.moveChild(1) }
-        idlingResource = ElapsedIdLingResource(DURATION)
+        // quick change a weight using move method
+        instrumentation.runOnMainSync { expandableLayout.move(2f, 0, null) }
+        idlingResource = ElapsedIdLingResource(0)
         Espresso.registerIdlingResources(idlingResource)
-        onView(withId(R.id.child2)).check(matches(orMoreHeight(1)))
-        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                child1,
-                child2
-        )))
+        onView(withId(R.id.expandableLayout)).check(matches(equalWeight(2f)))
         Espresso.unregisterIdlingResources(idlingResource)
 
-        // check toggle (close to first)
-        instrumentation.runOnMainSync { expandableLayout.toggle() }
-        idlingResource = ElapsedIdLingResource(DURATION)
+        // quick collapse
+        instrumentation.runOnMainSync { expandableLayout.collapse(0, null) }
+        idlingResource = ElapsedIdLingResource(0)
         Espresso.registerIdlingResources(idlingResource)
-        // move to first position
-        onView(withId(R.id.child1)).check(matches(equalHeight(expandableLayout)))
+        onView(withId(R.id.expandableLayout)).check(matches(equalWeight(0f)))
         Espresso.unregisterIdlingResources(idlingResource)
 
-        // check toggle open (full)
-        instrumentation.runOnMainSync { expandableLayout.toggle() }
-        idlingResource = ElapsedIdLingResource(DURATION)
+        // set expanse (default expanse weight is 3)
+        instrumentation.runOnMainSync { expandableLayout.isExpanded = true }
+        idlingResource = ElapsedIdLingResource(1000)
         Espresso.registerIdlingResources(idlingResource)
-        // move to first position
-        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                child1,
-                child2,
-                child3
-        )))
+        onView(withId(R.id.expandableLayout)).check(matches(equalWeight(3f)))
         Espresso.unregisterIdlingResources(idlingResource)
     }
 }
