@@ -25,10 +25,15 @@ You can include optional contents and use everywhere.
 
 ### ExpandableRelativeLayout
 
+#### Usage
+
+The expandableRelativeLayout doesn't work if child views change a size. 
+You should use the [ExpandableLinearLayout](#ExpandableLinearLayout) if there is a possibility.
+
 #### Code
 
 ```java
-ExpandableRelativeLayout expandLayout
+ExpandableRelativeLayout expandableLayout
  = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout);
 
 // toggle expand, collapse
@@ -74,6 +79,27 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
 </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 ```
 
+### ExpandableLinearLayout
+
+#### Usage
+
+You should use the ExpandableLinearLayout if child views may change a size. 
+For example, it gets and sets values from a server.
+
+#### Code
+
+```java
+ExpandableLinearLayout expandableLayout
+ = (ExpandableLinearLayout) findViewById(R.id.expandableLayout);
+
+child.setText("Sets text from a server");
+expandableLayout.initLayout(true);``// Recalculate size of children
+```
+
+The `initLayout()` is deprecated in v1.5.0.
+The argument of `isMaintain` flag doesn't work.
+I'll fix it in [v1.5.1](https://github.com/AAkira/ExpandableLayout/issues/66)
+
 ### ExpandableWeightLayout
 
 You should use this layout if you want to use weight attributes at expandable layout.
@@ -81,7 +107,7 @@ You should use this layout if you want to use weight attributes at expandable la
 #### Code
 
 ```java
-ExpandableWeightLayout expandLayout
+ExpandableWeightLayout expandableLayout
  = (ExpandableWeightLayout) findViewById(R.id.expandableLayout);
 
 // toggle expand, collapse
@@ -231,7 +257,7 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.4.3@aar'
+	compile 'com.github.aakira:expandable-layout:1.5.0@aar'
 }
 ```
 
