@@ -60,6 +60,8 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
 
         // default close
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
+        assertThat(expandableLayout.isExpanded, _is(false))
+
         // width
         onView(withId(R.id.child1)).check(matches(
                 equalWidth(resources.getDimensionPixelSize(R.dimen.relative_layout_2_child_1_width))))
@@ -76,6 +78,7 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
                 margin = expandableLayoutPadding
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // move to first layout
         instrumentation.runOnMainSync { expandableLayout.moveChild(0) }
@@ -86,6 +89,7 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
                 margin = expandableLayoutPadding
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // move to second layout
         instrumentation.runOnMainSync { expandableLayout.moveChild(1) }
@@ -96,5 +100,6 @@ class ExpandableRelativeLayoutActivityTest2 : ActivityInstrumentationTestCase2<E
                 margin = expandableLayoutPadding
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
     }
 }

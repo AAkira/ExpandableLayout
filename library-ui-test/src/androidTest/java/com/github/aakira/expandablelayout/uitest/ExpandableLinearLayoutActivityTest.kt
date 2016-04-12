@@ -59,6 +59,7 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
 
         // default close
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
+        assertThat(expandableLayout.isExpanded, _is(false))
 
         // open toggle
         instrumentation.runOnMainSync { expandableLayout.toggle() }
@@ -66,6 +67,7 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(orMoreHeight(1)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // move to first layout
         instrumentation.runOnMainSync { expandableLayout.moveChild(0) }
@@ -76,6 +78,7 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // set close height
         instrumentation.runOnMainSync { expandableLayout.closePosition = expandableLayout.currentPosition; }
@@ -92,6 +95,7 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // check toggle (close to first)
         instrumentation.runOnMainSync { expandableLayout.toggle() }
@@ -103,6 +107,7 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(false))
 
         // check toggle open (full)
         instrumentation.runOnMainSync { expandableLayout.toggle() }
@@ -116,5 +121,6 @@ class ExpandableLinearLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
     }
 }

@@ -8,7 +8,6 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.runner.AndroidJUnit4
 import android.test.ActivityInstrumentationTestCase2
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout
 import com.github.aakira.expandablelayout.ExpandableWeightLayout
 import com.github.aakira.expandablelayout.uitest.utils.ElapsedIdLingResource
 import com.github.aakira.expandablelayout.uitest.utils.equalHeight
@@ -55,6 +54,7 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
 
         // default close
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
+        assertThat(expandableLayout.isExpanded, _is(false))
 
         // open toggle
         instrumentation.runOnMainSync { expandableLayout.toggle() }
@@ -62,6 +62,7 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalWeight(3f)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // change weight
         instrumentation.runOnMainSync { expandableLayout.move(6f) }
@@ -69,6 +70,7 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalWeight(6f)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // quick change a weight using move method
         instrumentation.runOnMainSync { expandableLayout.move(2f, 0, null) }
@@ -76,6 +78,7 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalWeight(2f)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // quick collapse
         instrumentation.runOnMainSync { expandableLayout.collapse(0, null) }
@@ -83,6 +86,7 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalWeight(0f)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(false))
 
         // set expanse (default expanse weight is 3)
         instrumentation.runOnMainSync { expandableLayout.isExpanded = true }
@@ -90,5 +94,6 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalWeight(3f)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
     }
 }

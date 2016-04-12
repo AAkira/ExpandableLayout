@@ -60,8 +60,9 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
         defaultExpanded = a.getBoolean(R.styleable.expandableLayout_ael_expanded, DEFAULT_EXPANDED);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_ael_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
-        interpolator = Utils.createInterpolator(interpolatorType);
         a.recycle();
+        interpolator = Utils.createInterpolator(interpolatorType);
+        isExpanded = defaultExpanded;
     }
 
     @Override
@@ -333,17 +334,16 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
             @Override
             public void onAnimationEnd(Animator animation) {
                 isAnimating = false;
-                final float currentWeight = getCurrentWeight();
-                isExpanded = currentWeight > 0;
+                isExpanded = to > 0;
 
                 if (listener == null) return;
 
                 listener.onAnimationEnd();
-                if (currentWeight == layoutWeight) {
+                if (to == layoutWeight) {
                     listener.onOpened();
                     return;
                 }
-                if (currentWeight == 0) {
+                if (to == 0) {
                     listener.onClosed();
                 }
             }

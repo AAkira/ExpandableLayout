@@ -94,8 +94,9 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
                 Integer.MIN_VALUE);
         final int interpolatorType = a.getInteger(R.styleable.expandableLayout_ael_interpolator,
                 Utils.LINEAR_INTERPOLATOR);
-        interpolator = Utils.createInterpolator(interpolatorType);
         a.recycle();
+        interpolator = Utils.createInterpolator(interpolatorType);
+        isExpanded = defaultExpanded;
     }
 
     @Override
@@ -484,17 +485,16 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
             @Override
             public void onAnimationEnd(Animator animator) {
                 isAnimating = false;
-                final int currentSize = getCurrentPosition();
-                isExpanded = currentSize > closePosition;
+                isExpanded = to > closePosition;
 
                 if (listener == null) return;
 
                 listener.onAnimationEnd();
-                if (currentSize == layoutSize) {
+                if (to == layoutSize) {
                     listener.onOpened();
                     return;
                 }
-                if (currentSize == closePosition) {
+                if (to == closePosition) {
                     listener.onClosed();
                 }
             }
