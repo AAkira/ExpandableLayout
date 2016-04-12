@@ -59,6 +59,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
 
         // default close
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
+        assertThat(expandableLayout.isExpanded, _is(false))
 
         // open toggle
         instrumentation.runOnMainSync { expandableLayout.toggle() }
@@ -70,6 +71,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 child3
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // move to first layout
         instrumentation.runOnMainSync { expandableLayout.moveChild(0) }
@@ -79,6 +81,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 child0
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // move to second layout
         instrumentation.runOnMainSync { expandableLayout.moveChild(1) }
@@ -89,6 +92,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 child1
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // move to third layout
         instrumentation.runOnMainSync { expandableLayout.moveChild(2) }
@@ -99,6 +103,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 child2
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // move to forth layout
         instrumentation.runOnMainSync { expandableLayout.moveChild(3) }
@@ -110,6 +115,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 child3
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // quick move to first layout using moveChild method
         instrumentation.runOnMainSync { expandableLayout.moveChild(0, 0, null) }
@@ -119,6 +125,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 child0
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // quick move to 200 using move method
         instrumentation.runOnMainSync { expandableLayout.move(200, 0, null) }
@@ -126,6 +133,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(200)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
 
         // quick collapse
         instrumentation.runOnMainSync { expandableLayout.collapse(0, null) }
@@ -133,6 +141,7 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(false))
 
         // quick expand
         instrumentation.runOnMainSync { expandableLayout.expand(0, null) }
@@ -144,5 +153,6 @@ class ExpandableRelativeLayoutActivityTest3 : ActivityInstrumentationTestCase2<E
                 child3
         )))
         Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
     }
 }
