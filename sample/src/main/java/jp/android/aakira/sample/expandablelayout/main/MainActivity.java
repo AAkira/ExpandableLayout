@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.android.aakira.sample.expandablelayout.util.DividerItemDecoration;
 import jp.android.aakira.sample.expandablelayout.R;
+import jp.android.aakira.sample.expandablelayout.util.DividerItemDecoration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         data.put(1, "Normal\n[ExpandableWeightLayout]");
         data.put(2, "Example(RecyclerView)\n[ExpandableRelativeLayout]");
         data.put(3, "Example(Search screen)\n[ExpandableRelativeLayout]");
+        data.put(4, "Example(Read more)\n[ExpandableRelativeLayout]");
 
         recyclerView.setAdapter(new MainRecyclerAdapter(this, data));
     }

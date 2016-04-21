@@ -2,7 +2,7 @@ package jp.android.aakira.sample.expandablelayout.examplerecyclerview;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.res.Resources;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLayout;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
 
 import java.util.List;
@@ -43,10 +43,9 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ItemModel item = data.get(position);
-        final Resources resource = context.getResources();
         holder.textView.setText(item.description);
-        holder.itemView.setBackgroundColor(resource.getColor(item.colorId1));
-        holder.expandableLayout.setBackgroundColor(resource.getColor(item.colorId2));
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(context, item.colorId1));
+        holder.expandableLayout.setBackgroundColor(ContextCompat.getColor(context, item.colorId2));
         holder.expandableLayout.setInterpolator(item.interpolator);
         holder.expandableLayout.setExpanded(expandState.get(position));
         holder.expandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
@@ -84,13 +83,17 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public RelativeLayout buttonLayout;
-        public ExpandableRelativeLayout expandableLayout;
+        /**
+         * You must use the ExpandableLinearLayout in the recycler view.
+         * The ExpandableRelativeLayout doesn't work.
+         */
+        public ExpandableLinearLayout expandableLayout;
 
         public ViewHolder(View v) {
             super(v);
             textView = (TextView) v.findViewById(R.id.textView);
             buttonLayout = (RelativeLayout) v.findViewById(R.id.button);
-            expandableLayout = (ExpandableRelativeLayout) v.findViewById(R.id.expandableLayout);
+            expandableLayout = (ExpandableLinearLayout) v.findViewById(R.id.expandableLayout);
         }
     }
 
