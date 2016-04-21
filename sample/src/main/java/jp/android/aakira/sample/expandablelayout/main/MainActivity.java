@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         data.put(2, "Example(RecyclerView)\n[ExpandableRelativeLayout]");
         data.put(3, "Example(Search screen)\n[ExpandableRelativeLayout]");
         data.put(4, "Example(Read more)\n[ExpandableRelativeLayout]");
+        data.put(5, "Example(Changing content)\n[ExpandableLinearLayout]");
 
         recyclerView.setAdapter(new MainRecyclerAdapter(this, data));
     }
