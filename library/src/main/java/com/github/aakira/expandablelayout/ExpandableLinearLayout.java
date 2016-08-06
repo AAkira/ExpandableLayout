@@ -53,9 +53,14 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
     private ExpandableSavedState savedState;
     private boolean isExpanded;
     private int layoutSize = 0;
+    private boolean inRecyclerView = false;
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
     private boolean isAnimating = false;
+    /**
+     * State of expanse in recycler view.
+     */
+    private boolean recyclerExpanded = false;
     /**
      * view size of children
      **/
@@ -136,6 +141,9 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
         // adjust default position if a user set a value.
         if (!defaultExpanded) {
             setLayoutSize(closePosition);
+        }
+        if (inRecyclerView) {
+            setLayoutSize(recyclerExpanded ? layoutSize : closePosition);
         }
         final int childNumbers = childSizeList.size();
         if (childNumbers > defaultChildIndex && childNumbers > 0) {
@@ -277,6 +285,8 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     @Override
     public void setExpanded(final boolean expanded) {
+        if (inRecyclerView) recyclerExpanded = expanded;
+
         final int currentPosition = getCurrentPosition();
         if ((expanded && (currentPosition == layoutSize))
                 || (!expanded && currentPosition == closePosition)) return;
@@ -424,6 +434,15 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     public void setClosePositionIndex(final int childIndex) {
         this.closePosition = getChildPosition(childIndex);
+    }
+
+    /**
+     * Set true if expandable layout is used in recycler view.
+     *
+     * @param inRecyclerView
+     */
+    public void setInRecyclerView(final boolean inRecyclerView) {
+        this.inRecyclerView = inRecyclerView;
     }
 
     private boolean isVertical() {
