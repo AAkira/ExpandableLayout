@@ -43,8 +43,10 @@ public class RecyclerViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ItemModel item = data.get(position);
+        holder.setIsRecyclable(false);
         holder.textView.setText(item.description);
         holder.itemView.setBackgroundColor(ContextCompat.getColor(context, item.colorId1));
+        holder.expandableLayout.setInRecyclerView(true);
         holder.expandableLayout.setBackgroundColor(ContextCompat.getColor(context, item.colorId2));
         holder.expandableLayout.setInterpolator(item.interpolator);
         holder.expandableLayout.setExpanded(expandState.get(position));
