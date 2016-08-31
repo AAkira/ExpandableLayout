@@ -17,6 +17,7 @@
         </activity>
 
         <activity android:name=".ExpandableLinearLayoutActivity"/>
+        <activity android:name=".ExpandableLinearLayoutActivity3"/>
         <activity android:name=".ExpandableRecyclerViewActivity"/>
         <activity android:name=".ExpandableRelativeLayoutActivity"/>
         <activity android:name=".ExpandableRelativeLayoutActivity2"/>

@@ -65,7 +65,6 @@
             android:textColor="@color/white"
         />
 
-
         <TextView
             android:id="@+id/child2"
             android:layout_width="match_parent"
@@ -76,6 +75,5 @@
             android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample."
             android:textColor="@color/white"
         />
-
     </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 </LinearLayout>
