@@ -49,7 +49,7 @@ class ExpandableLinearLayoutActivityTest3 : ActivityInstrumentationTestCase2<Exp
     }
 
     @Test
-    fun testExpandableRelativeLayout() {
+    fun testExpandableLinearLayoutActivity3() {
         val activity = activity
         val instrumentation = instrumentation
 
