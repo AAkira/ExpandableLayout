@@ -255,14 +255,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * {@inheritDoc}
      */
     @Override
-    public void initLayout(final boolean isMaintain) {
-        // Not support in ExpandableRelativeLayout
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setDuration(final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +

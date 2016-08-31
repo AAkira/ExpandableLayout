@@ -45,7 +45,7 @@ class ExpandableRecyclerViewActivityTest : ActivityInstrumentationTestCase2<Expa
     }
 
     @Test
-    fun testExpandableRecyclerView() {
+    fun testExpandableRecyclerViewActivity() {
         val activity = activity
         val instrumentation = instrumentation
 

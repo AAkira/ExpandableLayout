@@ -55,11 +55,18 @@ fun equalWidth(width: Int) = object : TypeSafeMatcher<View>() {
 }
 
 fun equalWeight(weight: Float) = object : TypeSafeMatcher<View>() {
+    var viewWeight = 0f
+
     override fun describeTo(description: Description) {
-        description.appendText(String.format("The weight of this layout " +
-                "is not equal to weight(%f).", weight))
+        description.appendText(String.format("The weight(%f) of this layout " +
+                "is not equal to weight(%f).", viewWeight, weight))
     }
 
-    override fun matchesSafely(view: View) =
-            (view.layoutParams as LinearLayout.LayoutParams).weight == weight
+    override fun matchesSafely(view: View): Boolean {
+        (view.layoutParams as LinearLayout.LayoutParams).apply {
+            viewWeight = weight
+        }.run {
+            return (view.layoutParams as LinearLayout.LayoutParams).weight == weight
+        }
+    }
 }

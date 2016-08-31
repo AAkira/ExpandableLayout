@@ -258,20 +258,6 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      * {@inheritDoc}
      */
     @Override
-    public void initLayout(final boolean isMaintain) {
-        closePosition = 0;
-        layoutSize = 0;
-        isArranged = false;
-        isCalculatedSize = false;
-        savedState = null;
-
-        requestLayout();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setDuration(final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +
@@ -310,6 +296,25 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
     @Override
     public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
         this.interpolator = interpolator;
+    }
+
+    /**
+     * Initializes this layout.
+     */
+    public void initLayout() {
+        closePosition = 0;
+        layoutSize = 0;
+        isArranged = false;
+        isCalculatedSize = false;
+        savedState = null;
+
+        if (isVertical()) {
+            measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.UNSPECIFIED));
+        } else {
+            measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.UNSPECIFIED),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        }
     }
 
     /**
