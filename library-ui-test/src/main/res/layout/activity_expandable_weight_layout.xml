@@ -25,13 +25,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/material_teal_500"></View>
+            android:background="@color/material_teal_500"
+            />
 
         <com.github.aakira.expandablelayout.ExpandableWeightLayout
             android:id="@+id/expandableLayout"
@@ -42,26 +44,30 @@
             android:padding="@dimen/margin_normal"
             app:ael_duration="1000"
             app:ael_expanded="false"
-            app:ael_interpolator="anticipateOvershoot">
+            app:ael_interpolator="anticipateOvershoot"
+            >
 
             <TextView
+                android:id="@+id/child1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="
-    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
-    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
-    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
-    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
-    sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n
-    "
                 android:gravity="center"
-                android:textColor="#eee"/>
+                android:text="
+                    sample1.sample1.sample1.sample1.sample1.sample1.sample1.sample1.sample1.sample1.\n
+                    sample2.sample2.sample2.sample2.sample2.sample2.sample2.sample2.sample2.sample2.\n
+                    sample3.sample3.sample3.sample3.sample3.sample3.sample3.sample3.sample3.sample3.\n
+                    sample4.sample4.sample4.sample4.sample4.sample4.sample4.sample4.sample4.sample4.\n
+                    sample5.sample5.sample5.sample5.sample5.sample5.sample5.sample5.sample5.sample5.\n
+                    "
+                android:textColor="#eee"
+                />
         </com.github.aakira.expandablelayout.ExpandableWeightLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/material_teal_700"></View>
+            android:background="@color/material_teal_700"
+            />
     </LinearLayout>
 </LinearLayout>

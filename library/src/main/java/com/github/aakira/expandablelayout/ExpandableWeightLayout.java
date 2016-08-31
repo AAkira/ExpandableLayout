@@ -239,6 +239,15 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
     }
 
     /**
+     * Sets weight of expandable layout.
+     *
+     * @param expandWeight expand to this weight by {@link #expand()}
+     */
+    public void setExpandWeight(final float expandWeight) {
+        layoutWeight = expandWeight;
+    }
+
+    /**
      * Gets current weight of expandable layout.
      *
      * @return weight
