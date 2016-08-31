@@ -75,17 +75,6 @@ public interface ExpandableLayout {
     void collapse(final long duration, @Nullable final TimeInterpolator interpolator);
 
     /**
-     * Initializes this layout.
-     *
-     * This method doesn't work in the {@link ExpandableRelativeLayout}.
-     * You should use the {@link ExpandableLinearLayout} if size of children change.
-     *
-     * @param isMaintain #Notice Not support this argument.
-     */
-    @Deprecated
-    void initLayout(final boolean isMaintain);
-
-    /**
      * Sets the expandable layout listener.
      *
      * @param listener ExpandableLayoutListener
