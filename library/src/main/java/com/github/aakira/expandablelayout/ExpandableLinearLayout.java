@@ -112,28 +112,33 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
             // calculate a size of children
             childSizeList.clear();
             final int childCount = getChildCount();
-            int sumSize = 0;
-            View view;
-            LayoutParams params;
-            for (int i = 0; i < childCount; i++) {
-                view = getChildAt(i);
-                params = (LayoutParams) view.getLayoutParams();
 
-                if (0 < i) {
-                    sumSize = childSizeList.get(i - 1);
+            if (childCount > 0) {
+                int sumSize = 0;
+                View view;
+                LayoutParams params;
+                for (int i = 0; i < childCount; i++) {
+                    view = getChildAt(i);
+                    params = (LayoutParams) view.getLayoutParams();
+
+                    if (0 < i) {
+                        sumSize = childSizeList.get(i - 1);
+                    }
+                    childSizeList.add(
+                            (isVertical()
+                                    ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
+                                    : view.getMeasuredWidth() + params.leftMargin + params.rightMargin
+                            ) + sumSize);
                 }
-                childSizeList.add(
+                layoutSize = childSizeList.get(childCount - 1) +
                         (isVertical()
-                                ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
-                                : view.getMeasuredWidth() + params.leftMargin + params.rightMargin
-                        ) + sumSize);
+                                ? getPaddingTop() + getPaddingBottom()
+                                : getPaddingLeft() + getPaddingRight()
+                        );
+                isCalculatedSize = true;
+            } else {
+                throw new IllegalStateException("The expandableLinearLayout must have at least one child");
             }
-            layoutSize = childSizeList.get(childCount - 1) +
-                    (isVertical()
-                            ? getPaddingTop() + getPaddingBottom()
-                            : getPaddingLeft() + getPaddingRight()
-                    );
-            isCalculatedSize = true;
         }
 
         if (isArranged) return;
