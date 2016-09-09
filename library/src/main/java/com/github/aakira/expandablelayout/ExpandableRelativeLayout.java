@@ -37,8 +37,8 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * and {@link #defaultPosition} at the same time.
      * {@link #defaultPosition} has priority over {@link #defaultExpanded}
      * and {@link #defaultChildIndex} if you set them at the same time.
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
      * Priority
      * {@link #defaultPosition} > {@link #defaultChildIndex} > {@link #defaultExpanded}
      */
@@ -110,6 +110,27 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         if (isCalculatedSize) return;
+
+
+        int measureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+
+        if (isVertical()) {
+            int measuredHeight = getMeasuredHeight();
+
+            super.onMeasure(widthMeasureSpec, measureSpec);
+            layoutSize = getMeasuredHeight();
+
+            setMeasuredDimension(getMeasuredWidth(), measuredHeight);
+        } else {
+            int measuredWidth = getMeasuredWidth();
+
+            super.onMeasure(measureSpec, heightMeasureSpec);
+            layoutSize = getMeasuredWidth();
+
+            setMeasuredDimension(measuredWidth, getMeasuredHeight());
+        }
+
+
         // calculate a size of children
         childSizeList.clear();
         View view;
@@ -130,7 +151,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
         super.onLayout(changed, l, t, r, b);
 
         if (isArranged) return;
-        layoutSize = getCurrentPosition();
 
         childPositionList.clear();
         // calculate a top position of children
@@ -303,7 +323,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * @param position
-     *
      * @see #move(int, long, TimeInterpolator)
      */
     public void move(int position) {
@@ -334,7 +353,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * @param index child view index
-     *
      * @see #moveChild(int, long, TimeInterpolator)
      */
     public void moveChild(int index) {
@@ -379,7 +397,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @param index index of child view
-     *
      * @return position from top or left
      */
     public int getChildPosition(final int index) {
@@ -394,7 +411,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @return
-     *
      * @see #closePosition
      */
     public int getClosePosition() {
@@ -405,7 +421,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets the close position directly.
      *
      * @param position
-     *
      * @see #closePosition
      * @see #setClosePositionIndex(int)
      */
@@ -426,7 +441,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets close position using index of child view.
      *
      * @param childIndex
-     *
      * @see #closePosition
      * @see #setClosePosition(int)
      */
@@ -455,7 +469,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * @param to
      * @param duration
      * @param interpolator
-     *
      * @return
      */
     private ValueAnimator createExpandAnimator(
