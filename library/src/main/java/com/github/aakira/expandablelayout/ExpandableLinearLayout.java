@@ -53,9 +53,14 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
     private ExpandableSavedState savedState;
     private boolean isExpanded;
     private int layoutSize = 0;
+    private boolean inRecyclerView = false;
     private boolean isArranged = false;
     private boolean isCalculatedSize = false;
     private boolean isAnimating = false;
+    /**
+     * State of expanse in recycler view.
+     */
+    private boolean recyclerExpanded = false;
     /**
      * view size of children
      **/
@@ -107,28 +112,33 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
             // calculate a size of children
             childSizeList.clear();
             final int childCount = getChildCount();
-            int sumSize = 0;
-            View view;
-            LayoutParams params;
-            for (int i = 0; i < childCount; i++) {
-                view = getChildAt(i);
-                params = (LayoutParams) view.getLayoutParams();
 
-                if (0 < i) {
-                    sumSize = childSizeList.get(i - 1);
+            if (childCount > 0) {
+                int sumSize = 0;
+                View view;
+                LayoutParams params;
+                for (int i = 0; i < childCount; i++) {
+                    view = getChildAt(i);
+                    params = (LayoutParams) view.getLayoutParams();
+
+                    if (0 < i) {
+                        sumSize = childSizeList.get(i - 1);
+                    }
+                    childSizeList.add(
+                            (isVertical()
+                                    ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
+                                    : view.getMeasuredWidth() + params.leftMargin + params.rightMargin
+                            ) + sumSize);
                 }
-                childSizeList.add(
+                layoutSize = childSizeList.get(childCount - 1) +
                         (isVertical()
-                                ? view.getMeasuredHeight() + params.topMargin + params.bottomMargin
-                                : view.getMeasuredWidth() + params.leftMargin + params.rightMargin
-                        ) + sumSize);
+                                ? getPaddingTop() + getPaddingBottom()
+                                : getPaddingLeft() + getPaddingRight()
+                        );
+                isCalculatedSize = true;
+            } else {
+                throw new IllegalStateException("The expandableLinearLayout must have at least one child");
             }
-            layoutSize = childSizeList.get(childCount - 1) +
-                    (isVertical()
-                            ? getPaddingTop() + getPaddingBottom()
-                            : getPaddingLeft() + getPaddingRight()
-                    );
-            isCalculatedSize = true;
         }
 
         if (isArranged) return;
@@ -136,6 +146,9 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
         // adjust default position if a user set a value.
         if (!defaultExpanded) {
             setLayoutSize(closePosition);
+        }
+        if (inRecyclerView) {
+            setLayoutSize(recyclerExpanded ? layoutSize : closePosition);
         }
         final int childNumbers = childSizeList.size();
         if (childNumbers > defaultChildIndex && childNumbers > 0) {
@@ -250,20 +263,6 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      * {@inheritDoc}
      */
     @Override
-    public void initLayout(final boolean isMaintain) {
-        closePosition = 0;
-        layoutSize = 0;
-        isArranged = false;
-        isCalculatedSize = false;
-        savedState = null;
-
-        requestLayout();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setDuration(final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +
@@ -277,6 +276,8 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     @Override
     public void setExpanded(final boolean expanded) {
+        if (inRecyclerView) recyclerExpanded = expanded;
+
         final int currentPosition = getCurrentPosition();
         if ((expanded && (currentPosition == layoutSize))
                 || (!expanded && currentPosition == closePosition)) return;
@@ -300,6 +301,25 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
     @Override
     public void setInterpolator(@NonNull final TimeInterpolator interpolator) {
         this.interpolator = interpolator;
+    }
+
+    /**
+     * Initializes this layout.
+     */
+    public void initLayout() {
+        closePosition = 0;
+        layoutSize = 0;
+        isArranged = false;
+        isCalculatedSize = false;
+        savedState = null;
+
+        if (isVertical()) {
+            measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.UNSPECIFIED));
+        } else {
+            measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.UNSPECIFIED),
+                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        }
     }
 
     /**
@@ -424,6 +444,15 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     public void setClosePositionIndex(final int childIndex) {
         this.closePosition = getChildPosition(childIndex);
+    }
+
+    /**
+     * Set true if expandable layout is used in recycler view.
+     *
+     * @param inRecyclerView
+     */
+    public void setInRecyclerView(final boolean inRecyclerView) {
+        this.inRecyclerView = inRecyclerView;
     }
 
     private boolean isVertical() {

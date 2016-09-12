@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/material_teal_300"
+              android:orientation="vertical"
+>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_light"
+        android:orientation="horizontal"
+        android:padding="1dp"
+    >
+
+        <Button
+            android:id="@+id/expandButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:text="Toggle"
+        />
+
+        <Button
+            android:id="@+id/moveChildButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1"
+            android:text="Move child1"
+        />
+
+        <Button
+            android:id="@+id/moveChildButton2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Move child2"
+        />
+    </LinearLayout>
+
+    <com.github.aakira.expandablelayout.ExpandableLinearLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_orange_300"
+        android:orientation="vertical"
+        app:ael_duration="300"
+        app:ael_expanded="false"
+        app:ael_interpolator="decelerate"
+    >
+
+        <TextView
+            android:id="@+id/child1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:background="@color/material_cyan_500"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample."
+            android:textColor="@color/white"
+        />
+
+        <TextView
+            android:id="@+id/child2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_blue_500"
+            android:gravity="center"
+            android:padding="@dimen/margin_small"
+            android:text="sample.sample.sample.sample.sample.sample.sample.sample.sample.sample."
+            android:textColor="@color/white"
+        />
+    </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+</LinearLayout>

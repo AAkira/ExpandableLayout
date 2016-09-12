@@ -25,7 +25,7 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
 (ExpandableWeightLayoutActivity::class.java) {
 
     companion object {
-        val DURATION = 350L
+        val DURATION = 1000L
     }
 
     @Before
@@ -42,7 +42,7 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
     }
 
     @Test
-    fun testExpandableRelativeLayout3() {
+    fun testExpandableWeightLayout() {
         val activity = activity
         val instrumentation = instrumentation
 
@@ -90,9 +90,20 @@ class ExpandableWeightLayoutActivityTest : ActivityInstrumentationTestCase2<Expa
 
         // set expanse (default expanse weight is 3)
         instrumentation.runOnMainSync { expandableLayout.isExpanded = true }
-        idlingResource = ElapsedIdLingResource(1000)
+        idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalWeight(3f)))
+        Espresso.unregisterIdlingResources(idlingResource)
+        assertThat(expandableLayout.isExpanded, _is(true))
+
+        // check init layout
+        instrumentation.runOnMainSync {
+            expandableLayout.setExpandWeight(10f)
+            expandableLayout.expand()
+        }
+        idlingResource = ElapsedIdLingResource(DURATION)
+        Espresso.registerIdlingResources(idlingResource)
+        onView(withId(R.id.expandableLayout)).check(matches(equalWeight(10f)))
         Espresso.unregisterIdlingResources(idlingResource)
         assertThat(expandableLayout.isExpanded, _is(true))
     }

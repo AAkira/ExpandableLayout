@@ -8,7 +8,6 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.runner.AndroidJUnit4
 import android.test.ActivityInstrumentationTestCase2
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.github.aakira.expandablelayout.ExpandableLinearLayout
 import com.github.aakira.expandablelayout.uitest.utils.ElapsedIdLingResource
@@ -22,12 +21,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.hamcrest.CoreMatchers.`is` as _is
 
+/**
+ * test for [com.github.aakira.expandablelayout.ExpandableLinearLayout#initlayout]
+ *
+ * The default value is  {@link android.view.animation.AccelerateDecelerateInterpolator}
+ *
+ */
 @RunWith(AndroidJUnit4::class)
-class ExpandableLinearLayoutActivityTest2 : ActivityInstrumentationTestCase2<ExpandableLinearLayoutActivity2>
-(ExpandableLinearLayoutActivity2::class.java) {
+class ExpandableLinearLayoutActivityTest3 : ActivityInstrumentationTestCase2<ExpandableLinearLayoutActivity3>
+(ExpandableLinearLayoutActivity3::class.java) {
 
     companion object {
-        val DURATION = 500L
+        val DURATION = 300L
     }
 
     @Before
@@ -44,7 +49,7 @@ class ExpandableLinearLayoutActivityTest2 : ActivityInstrumentationTestCase2<Exp
     }
 
     @Test
-    fun testExpandableLinearLayoutActivity2() {
+    fun testExpandableLinearLayoutActivity3() {
         val activity = activity
         val instrumentation = instrumentation
 
@@ -54,9 +59,7 @@ class ExpandableLinearLayoutActivityTest2 : ActivityInstrumentationTestCase2<Exp
 
         val expandableLayout = activity.findViewById(R.id.expandableLayout) as ExpandableLinearLayout
         val child1 = activity.findViewById(R.id.child1) as TextView
-        val child2 = activity.findViewById(R.id.child2) as RelativeLayout
-        val child3 = activity.findViewById(R.id.child3) as TextView
-        val child4 = activity.findViewById(R.id.child4) as TextView
+        val child2 = activity.findViewById(R.id.child2) as TextView
         val marginSmall = getActivity().resources.getDimensionPixelSize(R.dimen.margin_small)
 
         // default close
@@ -79,42 +82,24 @@ class ExpandableLinearLayoutActivityTest2 : ActivityInstrumentationTestCase2<Exp
         )))
         Espresso.unregisterIdlingResources(idlingResource)
 
-        // set close height
-        instrumentation.runOnMainSync { expandableLayout.closePosition = expandableLayout.currentPosition; }
-
-        // move to second layout
-        instrumentation.runOnMainSync { expandableLayout.moveChild(1) }
+        // change child size
+        instrumentation.runOnMainSync {
+            child1.text = "++++++++++++++++++++check_init_layout++++++++++++++++++++++++++++" +
+                    "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+            expandableLayout.initLayout()
+        }
         idlingResource = ElapsedIdLingResource(DURATION)
         Espresso.registerIdlingResources(idlingResource)
-        onView(withId(R.id.child2)).check(matches(orMoreHeight(1)))
+        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(0)))
+        Espresso.unregisterIdlingResources(idlingResource)
+
+        // check init layout
+        instrumentation.runOnMainSync { expandableLayout.expand() }
+        idlingResource = ElapsedIdLingResource(DURATION)
+        Espresso.registerIdlingResources(idlingResource)
         onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
                 child1,
                 child2,
-                margin = marginSmall
-        )))
-        Espresso.unregisterIdlingResources(idlingResource)
-
-        // check toggle (close to first)
-        instrumentation.runOnMainSync { expandableLayout.toggle() }
-        idlingResource = ElapsedIdLingResource(DURATION)
-        Espresso.registerIdlingResources(idlingResource)
-        // move to first position
-        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                child1,
-                margin = marginSmall
-        )))
-        Espresso.unregisterIdlingResources(idlingResource)
-
-        // check toggle open (full)
-        instrumentation.runOnMainSync { expandableLayout.toggle() }
-        idlingResource = ElapsedIdLingResource(DURATION)
-        Espresso.registerIdlingResources(idlingResource)
-        // move to first position
-        onView(withId(R.id.expandableLayout)).check(matches(equalHeight(
-                child1,
-                child2,
-                child3,
-                child4,
                 margin = marginSmall
         )))
         Espresso.unregisterIdlingResources(idlingResource)

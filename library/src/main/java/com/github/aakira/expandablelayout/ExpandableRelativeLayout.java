@@ -111,9 +111,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
         if (isCalculatedSize) return;
 
-
-        int measureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
-
+        final int measureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
         if (isVertical()) {
             int measuredHeight = getMeasuredHeight();
 
@@ -129,7 +127,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
             setMeasuredDimension(measuredWidth, getMeasuredHeight());
         }
-
 
         // calculate a size of children
         childSizeList.clear();
@@ -275,14 +272,6 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * {@inheritDoc}
      */
     @Override
-    public void initLayout(final boolean isMaintain) {
-        // Not support in ExpandableRelativeLayout
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setDuration(final int duration) {
         if (duration < 0) {
             throw new IllegalArgumentException("Animators cannot have negative duration: " +
@@ -323,6 +312,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * @param position
+     *
      * @see #move(int, long, TimeInterpolator)
      */
     public void move(int position) {
@@ -353,6 +343,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
 
     /**
      * @param index child view index
+     *
      * @see #moveChild(int, long, TimeInterpolator)
      */
     public void moveChild(int index) {
@@ -397,6 +388,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @param index index of child view
+     *
      * @return position from top or left
      */
     public int getChildPosition(final int index) {
@@ -411,6 +403,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Gets the height from top of layout if orientation is vertical.
      *
      * @return
+     *
      * @see #closePosition
      */
     public int getClosePosition() {
@@ -421,6 +414,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets the close position directly.
      *
      * @param position
+     *
      * @see #closePosition
      * @see #setClosePositionIndex(int)
      */
@@ -441,6 +435,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * Sets close position using index of child view.
      *
      * @param childIndex
+     *
      * @see #closePosition
      * @see #setClosePosition(int)
      */
@@ -469,6 +464,7 @@ public class ExpandableRelativeLayout extends RelativeLayout implements Expandab
      * @param to
      * @param duration
      * @param interpolator
+     *
      * @return
      */
     private ValueAnimator createExpandAnimator(

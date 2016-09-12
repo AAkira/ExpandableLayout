@@ -16,10 +16,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ExpandableLinearLayoutActivity"/>
+        <activity android:name=".ExpandableLinearLayoutActivity3"/>
+        <activity android:name=".ExpandableRecyclerViewActivity"/>
         <activity android:name=".ExpandableRelativeLayoutActivity"/>
         <activity android:name=".ExpandableRelativeLayoutActivity2"/>
         <activity android:name=".ExpandableRelativeLayoutActivity3"/>
         <activity android:name=".ExpandableWeightLayoutActivity"/>
-        <activity android:name=".ExpandableLinearLayoutActivity"/>
     </application>
 </manifest>
