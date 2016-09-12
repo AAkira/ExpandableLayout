@@ -85,20 +85,29 @@ add `xmlns:app="http://schemas.android.com/apk/res-auto"`
 
 You should use the ExpandableLinearLayout if child views may change a size. 
 For example, it gets and sets values from a server.
+And you should use this in recycler view.
 
 #### Code
 
 ```java
+
+// resize expandable layout
+
 ExpandableLinearLayout expandableLayout
  = (ExpandableLinearLayout) findViewById(R.id.expandableLayout);
 
 child.setText("Sets text from a server");
-expandableLayout.initLayout(true); // Recalculate size of children
-```
+expandableLayout.initLayout(); // Recalculate size of children
 
-The `initLayout()` is deprecated in v1.5.0.  
-The argument of `isMaintain` flag doesn't work.  
-I'll fix it in [v1.5.1](https://github.com/AAkira/ExpandableLayout/issues/66)
+// recycler view
+// you must set a ViewHolder#setIsRecyclable(false) and ExpandableLinearLayout#setInRecyclerView(true) 
+
+@Override
+public void onBindViewHolder(final ViewHolder holder, final int position) {
+    holder.setIsRecyclable(false);
+    holder.expandableLinearLayout.setInRecyclerView(true);
+}
+```
 
 ### ExpandableWeightLayout
 
@@ -259,7 +268,7 @@ buildscript {
 }
 
 dependencies {
-	compile 'com.github.aakira:expandable-layout:1.5.1@aar'
+	compile 'com.github.aakira:expandable-layout:1.6.0@aar'
 }
 ```
 
