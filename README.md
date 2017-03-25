@@ -274,7 +274,7 @@ dependencies {
 
 ## Author
 
-### Akira Aratani
+### AAkira
 
 * Twitter
  - [@_a_akira](https://twitter.com/_a_akira)
