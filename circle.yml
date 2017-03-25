@@ -1,25 +1,33 @@
 machine:
   timezone: Asia/Tokyo
   java:
-    version: openjdk7
+    version: openjdk8
   environment:
-    JAVA_OPTS: "-Xms256m -Xmx1024m -XX:MaxPermSize=512m"
+    JAVAOPTIONS: "-Xms1024m -Xmx2048m"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
     ADB_INSTALL_TIMEOUT: 8
 
 dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "platform-tools, tools"
+    - echo y | android update sdk --no-ui --all --filter "android-25, build-tools-25.0.2"
+    - echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"
+    - echo y | android update sdk --no-ui --all --filter "extra-android-support"
+    - echo y | android update sdk --no-ui --all --filter "extra-google-m2repository"
+    - echo y | android update sdk --no-ui --all --filter "sys-img-armeabi-v7a-android-23"
   cache_directories:
     - ~/.android
     - /usr/local/android-sdk-linux
 
 test:
   pre:
-    - emulator -avd circleci-android21 -no-audio -no-window:
+    - emulator -avd circleci-android22 -no-audio -no-window:
         background: true
         parallel: true
     - circle-android wait-for-boot
   override:
     # unlock the emulator screen
-    - sleep 5
+    - sleep 30
     - adb shell input keyevent 82
     - ./gradlew connectedAndroidTest -PdisablePreDex
   post:
