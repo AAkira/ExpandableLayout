@@ -30,7 +30,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$SUPPORT_APP_COMPAT_VERSION"
     compile "com.android.support:recyclerview-v7:$SUPPORT_APP_COMPAT_VERSION"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
-    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'io.reactivex:rxjava:1.2.9'
     compile 'io.reactivex:rxandroid:1.2.1'
     androidTestCompile "com.android.support:support-annotations:$SUPPORT_APP_COMPAT_VERSION"
     androidTestCompile "com.android.support.test:runner:$SUPPORT_TEST_VERSION"
