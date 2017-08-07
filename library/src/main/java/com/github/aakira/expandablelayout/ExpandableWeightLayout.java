@@ -147,7 +147,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void expand() {
-        if (isAnimating) return;
+        if (isAnimating || isExpanded()) return;
 
         createExpandAnimator(0, layoutWeight, duration, interpolator).start();
     }
@@ -157,7 +157,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void expand(final long duration, @Nullable final TimeInterpolator interpolator) {
-        if (isAnimating) return;
+        if (isAnimating || isExpanded()) return;
 
         if (duration <= 0) {
             isExpanded = true;
@@ -174,7 +174,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void collapse() {
-        if (isAnimating) return;
+        if (isAnimating || !isExpanded()) return;
 
         createExpandAnimator(getCurrentWeight(), 0, duration, interpolator).start();
     }
@@ -184,7 +184,7 @@ public class ExpandableWeightLayout extends RelativeLayout implements Expandable
      */
     @Override
     public void collapse(final long duration, @Nullable final TimeInterpolator interpolator) {
-        if (isAnimating) return;
+        if (isAnimating || !isExpanded()) return;
 
         if (duration <= 0) {
             isExpanded = false;

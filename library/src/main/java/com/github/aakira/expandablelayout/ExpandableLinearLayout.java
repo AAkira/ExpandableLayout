@@ -216,7 +216,7 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     @Override
     public void expand() {
-        if (isAnimating) return;
+        if (isAnimating || isExpanded()) return;
 
         createExpandAnimator(getCurrentPosition(), layoutSize, duration, interpolator).start();
     }
@@ -226,7 +226,7 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     @Override
     public void expand(final long duration, final @Nullable TimeInterpolator interpolator) {
-        if (isAnimating) return;
+        if (isAnimating || isExpanded()) return;
 
         if (duration <= 0) {
             move(layoutSize, duration, interpolator);
@@ -240,7 +240,7 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     @Override
     public void collapse() {
-        if (isAnimating) return;
+        if (isAnimating || !isExpanded()) return;
 
         createExpandAnimator(getCurrentPosition(), closePosition, duration, interpolator).start();
     }
@@ -250,7 +250,7 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     @Override
     public void collapse(final long duration, final @Nullable TimeInterpolator interpolator) {
-        if (isAnimating) return;
+        if (isAnimating || !isExpanded()) return;
 
         if (duration <= 0) {
             move(closePosition, duration, interpolator);
